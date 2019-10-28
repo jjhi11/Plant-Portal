@@ -1993,101 +1993,6 @@ console.log(downloadArray);
 
         });
 
-//         console.log("Species Querying for single site");
-//         //plantSites.definitionExpression = "";
-//         //var speciesCommonName = speciesSelect.value;
-//         //console.log(speciesCommonName);
-//         doSpeciesSummaryClear();
-
-//         gridFields = ["species", "commonName", "growthForm", "indicatorWmvc", "cover", "collection", "catalogNumber"];
-
-//         var querySpecies = new QueryTask({
-//             url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_WFL1_1_View/FeatureServer/0",
-//         });
-//         console.log(querySpecies);
-
-
-//         relationQuerySpecies = new RelationshipQuery({
-//             objectIds: [singleSiteSpeciesID],
-//             outFields: ["OBJECTID", "species", "commonName", "growthForm", "nativity", "indicatorWmvc", "cover", "collection", "catalogNumber"],
-//             relationshipId: 0
-//         });
-
-//         querySpecies.executeRelationshipQuery(relationQuerySpecies).then(function(rslts) {
-//             console.log(rslts);
-
-//             var poop = rslts[singleSiteSpeciesID];
-
-//             //poop.fields = gridFields;
-
-//             console.log(poop);
-
-//         resultsArray = poop["features"];
-
-// console.log(resultsArray);
-
-//         var rsltItems = {
-//             "features": []
-//         };
-
-//         resultsArray.forEach(function(ftrs) {
-
-//             var att = ftrs.attributes;
-
-//             rsltItems.features.push(att);
-//         });
-
-//         console.log(rsltItems);
-
-            
-//             var qSiteFieldArray = [
-//                 //{alias: 'ObjectId', name: 'ObjectId'}, 
-//                 {
-//                     alias: 'Scientific Name',
-//                     name: 'species'
-//                 },
-//                 {
-//                     alias: 'Common Name',
-//                     name: 'commonName'
-//                 },
-//                 {
-//                     alias: "growthForm",
-//                     name: "growthForm"
-//                 },
-//                 {
-//                     alias: 'indicatorWmvc',
-//                     name: 'indicatorWmvc'
-//                 },
-//                 {
-//                     alias: 'cover',
-//                     name: 'cover'
-//                 },
-//                 {
-//                     alias: 'collection',
-//                     name: 'collection'
-//                 },
-//                 {
-//                     alias: 'catalogNumber',
-//                     name: 'catalogNumber'
-//                 },
-//             ];
-
-//             var forObject = {
-//                 features: '',
-//                 fields: ''
-//             }
-//             forObject.features = rsltItems.features;
-//             forObject.fields = qSiteFieldArray;
-
-         
-
-//             console.log(qSiteFieldArray);
-//             console.log(forObject);
-
-
-//             getResults(forObject);
-
-//         });
        
 
     }
@@ -2098,136 +2003,6 @@ console.log(downloadArray);
         type1 = evt.target.value;
         console.log(type1);
         var valueOne = waterShedSelect.options[waterShedSelect.selectedIndex].value;
-        //var valueTwo = hgmSelect.options[hgmSelect.selectedIndex].value;
-        // var valueThree = type1;
-        // var valueFour = conditionSelect.options[conditionSelect.selectedIndex].value;
-
-        // console.log(valueOne);
-        //console.log(valueTwo);
-        // console.log(valueThree);
-        // console.log(valueFour);
-
-        // var i;
-        // for (i = typeSelect.options.length - 1; i >= 0; i--) {
-        //     typeSelect.remove(i);
-        // }
-
-        // var i;
-        // for (i = waterShedSelect.options.length - 1; i >= 0; i--) {
-        //     waterShedSelect.remove(i);
-        // }
-
-        // var i;
-        // for (i = hgmSelect.options.length - 1; i >= 0; i--) {
-        //     hgmSelect.remove(i);
-        // }
-
-        // var i;
-        // for (i = conditionSelect.options.length - 1; i >= 0; i--) {
-        //     conditionSelect.remove(i);
-        // }
-
-        // var sqlQuery = "";
-        // var hucQuery = new Query();
-        //var hgmQuery = new Query();
-        // var conditionQuery = new Query();
-
-        // //234
-        // if (valueOne == "All" && valueTwo != "All" && valueThree != "All" && valueFour != "All") {
-        //     sqlQuery = "hgmClass = '" + valueTwo + "' AND wetlandType = '" + valueThree + "' AND wetlandCondition = '" + valueFour + "'";
-        // }
-        // //134 
-        // else if (valueOne != "All" && valueTwo == "All" && valueThree != "All" && valueFour != "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "' AND wetlandType = '" + valueThree + "' AND wetlandCondition = '" + valueFour + "'";
-        // }
-        // //124
-        // else if (valueOne != "All" && valueTwo != "All" && valueThree == "All" && valueFour != "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "' AND hgmClass = '" + valueTwo + "' AND wetlandCondition = '" + valueFour + "'";
-        // }
-        // //123
-        // else if (valueOne != "All" && valueTwo != "All" && valueThree != "All" && valueFour == "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "' AND hgmClass = '" + valueTwo + "' AND wetlandType = '" + valueThree + "'";
-        // }
-        // //34
-        // else if (valueOne == "All" && valueTwo == "All" && valueThree != "All" && valueFour != "All") {
-        //     sqlQuery = "wetlandType = '" + valueThree + "' AND wetlandCondition = '" + valueFour + "'";
-        // }
-        // //4
-        // else if (valueOne == "All" && valueTwo == "All" && valueThree == "All" && valueFour != "All") {
-        //     sqlQuery = "wetlandCondition = '" + valueFour + "'";
-        // }
-        // //3
-        // else if (valueOne == "All" && valueTwo == "All" && valueThree != "All" && valueFour == "All") {
-        //     sqlQuery = "wetlandType = '" + valueThree + "'";
-        // }
-        // //2
-        // else if (valueOne == "All" && valueTwo != "All" && valueThree == "All" && valueFour == "All") {
-        //     sqlQuery = "hgmClass = '" + valueTwo + "'";
-        // }
-        // //1
-        // else if (valueOne != "All" && valueTwo == "All" && valueThree == "All" && valueFour == "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "'";
-        // }
-        // //14
-        // else if (valueOne != "All" && valueTwo == "All" && valueThree == "All" && valueFour != "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "' AND wetlandCondition = '" + valueFour + "'";
-        // }
-        // //1234
-        // else if (valueOne != "All" && valueTwo != "All" && valueThree != "All" && valueFour != "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "' AND hgmClass = '" + valueTwo + "' AND wetlandType = '" + valueThree + "' AND wetlandCondition = '" + valueFour + "'";
-        // }
-        // //13
-        // else if (valueOne != "All" && valueTwo == "All" && valueThree != "All" && valueFour == "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "' AND wetlandType = '" + valueThree + "'";
-        // }
-        // //12
-        // else if (valueOne != "All" && valueTwo != "All" && valueThree == "All" && valueFour == "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "' AND hgmClass = '" + valueTwo + "'";
-        // }
-        // //1
-        // else if (valueOne != "All" && valueTwo == "All" && valueThree == "All" && valueFour == "All") {
-        //     sqlQuery = "huc8 = '" + valueOne + "'";
-        // }
-        // //23
-        // else if (valueOne == "All" && valueTwo != "All" && valueThree != "All" && valueFour == "All") {
-        //     sqlQuery = "hgmClass = '" + valueTwo + "' AND wetlandType = '" + valueThree + "'";
-        // }
-        // //24
-        // else if (valueOne == "All" && valueTwo != "All" && valueThree == "All" && valueFour != "All") {
-        //     sqlQuery = "hgmClass = '" + valueTwo + "' AND wetlandCondition = '" + valueFour + "'";
-        // } else {
-        //     sqlQuery = "";
-        // }
-
-        // sqlQuery = plantSites.definitionExpression;
-
-        // console.log(sqlQuery);
-
-
-        // hucQuery.outFields = ["huc8"];
-        // hucQuery.returnDistinctValues = true;
-        // hucQuery.orderByFields = ["huc8"];
-        // hucQuery.where = sqlQuery;
-        // plantSites.queryFeatures(hucQuery).then(function(e) {
-        //     addToSelect2(e);
-        // })
-
-        // hgmQuery.outFields = ["hgmClass"];
-        // hgmQuery.returnDistinctValues = true;
-        // hgmQuery.orderByFields = ["hgmClass"];
-        // hgmQuery.where = sqlQuery;
-        // plantSites.queryFeatures(hgmQuery).then(function(et) {
-        //     addToSelect3(et);
-        // })
-
-        // conditionQuery.outFields = ["wetlandCondition"];
-        // conditionQuery.returnDistinctValues = true;
-        // conditionQuery.orderByFields = ["wetlandCondition"];
-        // conditionQuery.where = sqlQuery;
-        // plantSites.queryFeatures(conditionQuery).then(function(ett) {
-        //     addToSelect4(ett);
-        // })
-
 
     })
 
@@ -2238,41 +2013,7 @@ console.log(downloadArray);
         type2 = evt.target.value;
         console.log(type2);
 
-        // var sqlQuery = "";
-        // var weQuery = new Query();
-        // var hucQuery = new Query();
-        // var hgmQuery = new Query();
-        // var conditionQuery = new Query();
 
-
-
-        // sqlQuery = plantSites.definitionExpression;
-        // console.log(sqlQuery);
-
-
-        // weQuery.outFields = ["wetlandType"];
-        // weQuery.returnDistinctValues = true;
-        // weQuery.orderByFields = ["wetlandType"];
-        // weQuery.where = sqlQuery;
-        // plantSites.queryFeatures(weQuery).then(function(e) {
-        //     addToSelect(e);
-        // })
-
-        // hgmQuery.outFields = ["hgmClass"];
-        // hgmQuery.returnDistinctValues = true;
-        // hgmQuery.orderByFields = ["hgmClass"];
-        // hgmQuery.where = sqlQuery;
-        // plantSites.queryFeatures(hgmQuery).then(function(et) {
-        //     addToSelect3(et);
-        // })
-
-        // conditionQuery.outFields = ["wetlandCondition"];
-        // conditionQuery.returnDistinctValues = true;
-        // conditionQuery.orderByFields = ["wetlandCondition"];
-        // conditionQuery.where = sqlQuery;
-        // plantSites.queryFeatures(conditionQuery).then(function(ett) {
-        //     addToSelect4(ett);
-        // })
 
     })
 
@@ -2325,40 +2066,6 @@ console.log(downloadArray);
         type4 = evt.target.value;
         console.log(type4);
 
-        // var sqlQuery = "";
-        // var weQuery = new Query();
-        // var hucQuery = new Query();
-        // var hgmQuery = new Query();
-        // var conditionQuery = new Query();
-
-        // sqlQuery = plantSites.definitionExpression;
-
-        // console.log(sqlQuery);
-
-
-        // weQuery.outFields = ["wetlandType"];
-        // weQuery.returnDistinctValues = true;
-        // weQuery.orderByFields = ["wetlandType"];
-        // weQuery.where = sqlQuery;
-        // plantSites.queryFeatures(weQuery).then(function(e) {
-        //     addToSelect(e);
-        // })
-
-        // hucQuery.outFields = ["huc8"];
-        // hucQuery.returnDistinctValues = true;
-        // hucQuery.orderByFields = ["huc8"];
-        // hucQuery.where = sqlQuery;
-        // plantSites.queryFeatures(hucQuery).then(function(et) {
-        //     addToSelect2(et);
-        // })
-
-        // hgmQuery.outFields = ["hgmClass"];
-        // hgmQuery.returnDistinctValues = true;
-        // hgmQuery.orderByFields = ["hgmClass"];
-        // hgmQuery.where = sqlQuery;
-        // plantSites.queryFeatures(hgmQuery).then(function(ett) {
-        //     addToSelect3(ett);
-        // })
     })
 
     document.getElementById("removeX").addEventListener("click", function(evt) {
@@ -2373,15 +2080,6 @@ console.log(downloadArray);
         //doClear();
     });
 
-    //       mapView.popup.watch("visible", function(newValue) {
-    //     if (newValue) {
-    //       doClear();
-    //     }
-    //   });
-
-
-    //     mapView.graphics.removeAll();
-    //     mapView.popup.clear();
 
 
 
