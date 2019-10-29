@@ -931,7 +931,7 @@ console.log(downloadArray);
             idArray.push(att);
         });
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalTestV3_WFL1_1_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalTestV3_View/FeatureServer/0"
         });
 
         var speciesRelateQuery = new RelationshipQuery({
@@ -1009,7 +1009,7 @@ console.log(downloadArray);
         console.log("Query Panel Open");
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalTestV3_WFL1_1_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalTestV3_View/FeatureServer/0"
         });
 
         // var typeQuery = new Query();
@@ -1284,7 +1284,7 @@ console.log(downloadArray);
         console.log(speciesCommonName);
 
         var speciesQueryTask = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_WFL1_1_View/FeatureServer/5",
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_View/FeatureServer/5",
         });
 
         //Query the related table for names that match commonName field with the user selected option in the DOM
@@ -1967,7 +1967,7 @@ console.log(downloadArray);
         ];
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_WFL1_1_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_View/FeatureServer/0"
         });
 
         relationQuerySpecies = new RelationshipQuery({
