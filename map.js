@@ -1036,6 +1036,7 @@ console.log(downloadArray);
         ecoQuery.returnDistinctValues = true;
 
         querySpecies.execute(ecoQuery).then(function(ecoRslts) {
+            console.log(ecoRslts);
             addToEcoLevel(ecoRslts);
         })
 
@@ -1125,8 +1126,9 @@ console.log(downloadArray);
         ecoLevel.add(option);
 
         values.features.forEach(function(value) {
+            console.log("populating drop down");
             var option = domConstruct.create("option");
-            option.text = value.attributes.ecolevel3;
+            option.text = value.attributes.ecoLevel3;
             ecoLevel.add(option);
         });
         //hgmSelect.remove(1);
