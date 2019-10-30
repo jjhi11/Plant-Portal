@@ -1152,7 +1152,7 @@ console.log(downloadArray);
             conditionSelect.add(option);
         });
 
-        //conditionSelect.remove(1);
+
     }
 
 
