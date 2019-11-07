@@ -17,6 +17,7 @@ require([
     "esri/widgets/Compass",
     "esri/widgets/Search",
     "esri/widgets/Legend",
+    "esri/widgets/LayerList",
     "esri/widgets/BasemapToggle",
     "esri/core/watchUtils",
     "esri/tasks/support/RelationshipQuery",
@@ -52,7 +53,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, Query, QueryTask, Home, Zoom, Compass, Search, Legend, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, Query, QueryTask, Home, Zoom, Compass, Search, Legend, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     /******************************************************************
      *
@@ -307,10 +308,25 @@ require([
     });
 
     // Panel widgets - add legend
-    var legendWidget = new Legend({
+    // var legendWidget = new Legend({
+    //     //container: "legendDiv",
+    //     view: mapView
+    // });
+
+    const layerList = new LayerList({
+        view: mapView,
         container: "legendDiv",
-        view: mapView
-    });
+        listItemCreatedFunction: function(event) {
+          const item = event.item;
+          if (item.layer.type != "group") {
+            // don't show legend twice
+            item.panel = {
+              content: "legend",
+              open: true
+            };
+          }
+        }
+      });
 
     //uses featureLayer.filter to filter out confidential sites. Only visually though.
     mapView.whenLayerView(plantSites).then(function(layerView) {
@@ -399,8 +415,11 @@ require([
     function setUpSketchViewModel() {
         // polygonGraphicsLayer will be used by the sketchviewmodel
         // show the polygon being drawn on the view
-        polygonGraphicsLayer = new GraphicsLayer();
+        polygonGraphicsLayer = new GraphicsLayer({
+            listMode: "hide"
+        });
         mapView.map.add(polygonGraphicsLayer);
+    
 
         // add the select by polygon button the view
         mapView.ui.add("select-by-polygon", "top-left");
