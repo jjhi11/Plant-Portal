@@ -111,10 +111,10 @@ require([
             if (feature.graphic.attributes.siteCode) {
                 content += "<span class='bold' title='Site Code'><b>Site Code: </b></span>{siteCode}<br/>";
             }
-            if (feature.graphic.attributes.surveyDate) {
-                console.log(feature.graphic.attributes.surveyDate);
-                const date = moment(feature.graphic.attributes.surveyDate).format('ll');
-                content += "<span class='bold' title='Survey Date'><b>Survey Date: </b></span>{surveyDate}<br/>";
+            if (feature.graphic.attributes.SurveyDate) {
+                console.log(feature.graphic.attributes.SurveyDate);
+                const date = moment(feature.graphic.attributes.SurveyDate).format('ll');
+                content += "<span class='bold' title='Survey Date'><b>Survey Date: </b></span>{SurveyDate}<br/>";
             }
             if (feature.graphic.attributes.coverMethod) {
                 content += "<span class='bold' title='Site Code'><b>Cover Method: </b></span>{coverMethod}<br/>";
@@ -174,7 +174,7 @@ require([
                              label: "Site Code" 
                     },
                     {
-                        fieldName: "surveyDate",
+                        fieldName: "SurveyDate",
                              visible: false,
                              label: "Survey Date" 
                     },
@@ -217,7 +217,7 @@ require([
             },
                     {
                     type: "text",
-                    text: "<b>Site Code: </b>{siteCode}<br><b>Survey Date: </b>{surveyDate}<br><b>Cover Method: </b>{coverMethod}<br><b>Organization: </b>{Organization}<br><b>Ecological System: </b>{ecoSystem}<br><b>HGM Class: </b>{hgmClass}<br><b>Wetland Type: </b>{wetlandType}<br><b>Wetland Condition: </b>{wetlandCondition}<br><b>Condition Method: </b>{conditionMethod}<br>"
+                    text: "<b>Site Code: </b>{siteCode}<br><b>Survey Date: </b>{SurveyDate}<br><b>Cover Method: </b>{coverMethod}<br><b>Organization: </b>{Organization}<br><b>Ecological System: </b>{ecoSystem}<br><b>HGM Class: </b>{hgmClass}<br><b>Wetland Type: </b>{wetlandType}<br><b>Wetland Condition: </b>{wetlandCondition}<br><b>Condition Method: </b>{conditionMethod}<br>"
                 },
                 {
                     type: "attachments"
@@ -336,7 +336,7 @@ require([
         // polygon that was drawn on the view
         var query = {
             geometry: geometry,
-            outFields: ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "surveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"]
+            outFields: ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "SurveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"]
         };
 
         // query graphics from the csv layer view. Geometry set for the query
@@ -344,7 +344,7 @@ require([
         plantLayerView
             .queryFeatures(query)
             .then(function(results) {
-                gridFields = ["OBJECTID", "project", "surveyDate", "huc8", "siteCode", "ecoSystem",
+                gridFields = ["OBJECTID", "project", "SurveyDate", "huc8", "siteCode", "ecoSystem",
                     "hgmClass", "wetlandType", "wetlandCondition", "coverMethod"
                 ];
                 console.log(results);
@@ -545,7 +545,7 @@ require([
                 console.info("hover");
                 evt.target.title = "NatureServe's Ecological System";
             });
-            grid.on("th.field-surveyDate:mouseover", function(evt) {
+            grid.on("th.field-SurveyDate:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Survey Date";
             });
@@ -796,12 +796,11 @@ console.log("go on and create grid");
         }
 
 
-        //add the counts to the summaryArray
+        //format the SurveyDate 
         for (var i = 0; i < data.length; i++) {
-            console.log(data[i].surveyDate);
-            var dateString = moment(data[i].surveyDate).format('l');
-            data[i].surveyDate = dateString;
-            console.log(dateString);
+            var dateString = moment(data[i].SurveyDate).format('l');
+            data[i].SurveyDate = dateString;
+
         }
 
         // set the datastore for the grid using the
@@ -1341,11 +1340,11 @@ console.log(downloadArray);
                 plantSites.definitionExpression = defExp;
 
                 var query = plantSites.createQuery();
-                gridFields = ["OBJECTID", "project", "surveyDate", "huc8", "siteCode", "ecoSystem",
+                gridFields = ["OBJECTID", "project", "SurveyDate", "huc8", "siteCode", "ecoSystem",
                     "hgmClass", "wetlandType", "wetlandCondition", "coverMethod"
                 ];
                 query.where = defExp;
-                query.outFields = ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "surveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
+                query.outFields = ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "SurveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
 
                 plantSites.queryFeatures(query).then(function(e) {
                     console.log(e);
@@ -1380,7 +1379,7 @@ console.log(downloadArray);
         console.log("doQuery");
         doGridClear();
 
-        gridFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "surveyDate",
+        gridFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "SurveyDate",
             "hgmClass", "wetlandType", "wetlandCondition", "coverMethod"
         ];
 
@@ -1481,7 +1480,7 @@ console.log(downloadArray);
 
         var query = plantSites.createQuery();
         //query.where = "STATE_NAME = 'Washington'";
-        query.outFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "surveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
+        query.outFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "SurveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
 
         plantSites.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -1516,7 +1515,7 @@ console.log(downloadArray);
                 },
                 {
                     alias: 'Survey Date',
-                    name: 'surveyDate'
+                    name: 'SurveyDate'
                 },
                 {
                     alias: 'HGM Class',
