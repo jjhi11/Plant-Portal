@@ -799,7 +799,7 @@ console.log("go on and create grid");
         //add the counts to the summaryArray
         for (var i = 0; i < data.length; i++) {
             var dateString = moment(data[i].surveyDate).format('l');
-            data[i].surveyDate = dateString;
+            //data[i].surveyDate = dateString;
         }
 
         // set the datastore for the grid using the
