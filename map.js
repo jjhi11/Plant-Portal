@@ -109,34 +109,40 @@ require([
     contentSites = function(feature) {
         var content = "";
 
+        if (feature.graphic.attributes.project) {
+            content += "<span class='bold' title='Organization'><b>Project: </b></span>{project}<br/>";
+        }
             if (feature.graphic.attributes.siteCode) {
                 content += "<span class='bold' title='Site Code'><b>Site Code: </b></span>{siteCode}<br/>";
             }
-            if (feature.graphic.attributes.SurveyDate) {
-                console.log(feature.graphic.attributes.SurveyDate);
-                const date = moment(feature.graphic.attributes.SurveyDate).format('ll');
-                content += "<span class='bold' title='Survey Date'><b>Survey Date: </b></span>{SurveyDate}<br/>";
+            if (feature.graphic.attributes.surveyDate) {
+                console.log(feature.graphic.attributes.surveyDate);
+                const date = moment(feature.graphic.attributes.surveyDate).format('ll');
+                content += "<span class='bold' title='Survey Date'><b>Survey Date: </b></span>{surveyDate}<br/>";
             }
-            if (feature.graphic.attributes.coverMethod) {
-                content += "<span class='bold' title='Site Code'><b>Cover Method: </b></span>{coverMethod}<br/>";
+            if (feature.graphic.attributes.watershed) {
+                content += "<span class='bold' title='HGM Class'><b>Watershed: </b></span>{watershed}<br/>";
             }
-            if (feature.graphic.attributes.Organization) {
-                content += "<span class='bold' title='Organization'><b>Organization: </b></span>{Organization}<br/>";
+            if (feature.graphic.attributes.ecoregionalGroup) {
+                content += "<span class='bold' title='Ecological System'><b>Ecoregional Group: </b></span>{ecoregionalGroup}<br/>";
             }
-            if (feature.graphic.attributes.ecoSystem) {
-                content += "<span class='bold' title='Ecological System'><b>Ecological System: </b></span>{ecoSystem}<br/>";
-            }
-            if (feature.graphic.attributes.hgmClass) {
-                content += "<span class='bold' title='HGM Class'><b>HGM Class: </b></span>{hgmClass}<br/>";
-            }
-            if (feature.graphic.attributes.siteCode) {
+            if (feature.graphic.attributes.wetlandType) {
                 content += "<span class='bold' title='Wetland Type'><b>Wetland Type: </b></span>{wetlandType}<br/>";
             }
-            if (feature.graphic.attributes.wetlandCondition) {
-                content += "<span class='bold' title='Wetland Condition'><b>Wetland Condition: </b></span>{wetlandCondition}<br/>";
+            if (feature.graphic.attributes.projectWetlandClass) {
+                content += "<span class='bold' title='Wetland Type'><b>Project Wetland Class: </b></span>{projectWetlandClass}<br/>";
             }
-            if (feature.graphic.attributes.conditionMethod) {
-                content += "<span class='bold' title='Condition Method'><b>Condition Method: </b></span>{conditionMethod}<br/>";
+            if (feature.graphic.attributes.vegetationCondition) {
+                content += "<span class='bold' title='Vegetation Condition'><b>Vegetation Condition: </b></span>{vegetationCondition}<br/>";
+            }
+            if (feature.graphic.attributes.privacyStatus) {
+                content += "<span class='bold' title='Condition Method'><b>Privacy Status: </b></span>{privacyStatus}<br/>";
+            }
+            if (feature.graphic.attributes.meanC) {
+                content += "<span class='bold' title='Site Code'><b>Mean C: </b></span>{meanC}<br/>";
+            }
+            if (feature.graphic.attributes.relativeNativeCover) {
+                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relativeNativeCover}<br/>";
             }
         return content;
     }
@@ -159,7 +165,7 @@ require([
     let plantLayerView;
 
     var plantSites = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_View/FeatureServer",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer",
         title: "Plant Sites",
         visibile: true,
         outFields: ["*"],
@@ -175,7 +181,7 @@ require([
                              label: "Site Code" 
                     },
                     {
-                        fieldName: "SurveyDate",
+                        fieldName: "surveyDate",
                              visible: false,
                              label: "Survey Date" 
                     },
@@ -218,7 +224,7 @@ require([
             },
                     {
                     type: "text",
-                    text: "<b>Site Code: </b>{siteCode}<br><b>Survey Date: </b>{SurveyDate}<br><b>Cover Method: </b>{coverMethod}<br><b>Organization: </b>{Organization}<br><b>Ecological System: </b>{ecoSystem}<br><b>HGM Class: </b>{hgmClass}<br><b>Wetland Type: </b>{wetlandType}<br><b>Wetland Condition: </b>{wetlandCondition}<br><b>Condition Method: </b>{conditionMethod}<br>"
+                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{siteCode}<br><b>Survey Date: </b>{surveyDate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalGroup}<br><b>Wetland Type: </b>{wetlandType}<br><b>Project Wetland Class: </b>{projectWetlandClass}<br><b>Vegetation Condition: </b>{vegetationCondition}<br><b>Privacy Status: </b>{privacyStatus}<br><b>Mean C: </b>{meanC}<br><b>Relative Native Cover: </b>{relativeNativeCover}<br>"
                 },
                 {
                     type: "attachments"
@@ -234,7 +240,8 @@ require([
 
 
     var sitesSpeciesJoin = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/siteSpeciesJoin/FeatureServer",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/sitesSpeciesJoinV4/FeatureServer",
+        //url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/siteSpeciesJoin/FeatureServer",
         // title: "Plant Sites",
         // visibile: true,
         outFields: ["*"],
@@ -328,18 +335,6 @@ require([
         }
       });
 
-    //uses featureLayer.filter to filter out confidential sites. Only visually though.
-    mapView.whenLayerView(plantSites).then(function(layerView) {
-        plantLayerView = layerView;
-        plantLayerView.filter = {
-            where: "confidential = 0"
-        };
-    });
-
-    function errorCallback(error) {
-        console.log("error:", error);
-    }
-
 
     /****************************************************
      * Selects features from the csv layer that intersect
@@ -352,7 +347,7 @@ require([
         // polygon that was drawn on the view
         var query = {
             geometry: geometry,
-            outFields: ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "SurveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"]
+            outFields: ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "surveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"]
         };
 
         // query graphics from the csv layer view. Geometry set for the query
@@ -360,7 +355,7 @@ require([
         plantLayerView
             .queryFeatures(query)
             .then(function(results) {
-                gridFields = ["OBJECTID", "project", "SurveyDate", "huc8", "siteCode", "ecoSystem",
+                gridFields = ["OBJECTID", "project", "surveyDate", "huc8", "siteCode", "ecoSystem",
                     "hgmClass", "wetlandType", "wetlandCondition", "coverMethod"
                 ];
                 console.log(results);
@@ -564,7 +559,7 @@ require([
                 console.info("hover");
                 evt.target.title = "NatureServe's Ecological System";
             });
-            grid.on("th.field-SurveyDate:mouseover", function(evt) {
+            grid.on("th.field-surveyDate:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Survey Date";
             });
@@ -724,7 +719,7 @@ require([
 
 
     var hucLayer = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_View/FeatureServer/1",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/1",
         title: "HUCs",
         visibile: true,
         popupTemplate: {
@@ -815,10 +810,10 @@ console.log("go on and create grid");
         }
 
 
-        //format the SurveyDate 
+        //format the surveyDate 
         for (var i = 0; i < data.length; i++) {
-            var dateString = moment(data[i].SurveyDate).format('l');
-            data[i].SurveyDate = dateString;
+            var dateString = moment(data[i].surveyDate).format('l');
+            data[i].surveyDate = dateString;
 
         }
 
@@ -951,7 +946,7 @@ console.log(downloadArray);
             idArray.push(att);
         });
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalTestV3_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/0"
         });
 
         var speciesRelateQuery = new RelationshipQuery({
@@ -1029,7 +1024,7 @@ console.log(downloadArray);
         console.log("Query Panel Open");
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalTestV3_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/0"
         });
 
         // var typeQuery = new Query();
@@ -1306,7 +1301,7 @@ console.log(downloadArray);
         console.log(speciesCommonName);
 
         var speciesQueryTask = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_View/FeatureServer/5",
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/5",
         });
 
         //Query the related table for names that match commonName field with the user selected option in the DOM
@@ -1359,11 +1354,11 @@ console.log(downloadArray);
                 plantSites.definitionExpression = defExp;
 
                 var query = plantSites.createQuery();
-                gridFields = ["OBJECTID", "project", "SurveyDate", "huc8", "siteCode", "ecoSystem",
+                gridFields = ["OBJECTID", "project", "surveyDate", "huc8", "siteCode", "ecoSystem",
                     "hgmClass", "wetlandType", "wetlandCondition", "coverMethod"
                 ];
                 query.where = defExp;
-                query.outFields = ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "SurveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
+                query.outFields = ["OBJECTID", "project", "huc8", "siteCode", "ecolevel3", "ecolevel4", "ecoSystem", "surveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
 
                 plantSites.queryFeatures(query).then(function(e) {
                     console.log(e);
@@ -1398,7 +1393,7 @@ console.log(downloadArray);
         console.log("doQuery");
         doGridClear();
 
-        gridFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "SurveyDate",
+        gridFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "surveyDate",
             "hgmClass", "wetlandType", "wetlandCondition", "coverMethod"
         ];
 
@@ -1499,7 +1494,7 @@ console.log(downloadArray);
 
         var query = plantSites.createQuery();
         //query.where = "STATE_NAME = 'Washington'";
-        query.outFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "SurveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
+        query.outFields = ["OBJECTID", "huc8", "siteCode", "ecoSystem", "surveyDate", "hgmClass", "wetlandType", "wetlandCondition", "coverMethod", "confidential"];
 
         plantSites.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -1534,7 +1529,7 @@ console.log(downloadArray);
                 },
                 {
                     alias: 'Survey Date',
-                    name: 'SurveyDate'
+                    name: 'surveyDate'
                 },
                 {
                     alias: 'HGM Class',
@@ -1803,7 +1798,7 @@ console.log(downloadArray);
 
         var query = sitesSpeciesJoin.createQuery();
         query.where = queryParams;
-        query.outFields = ["ObjectId", "species", "commonName", "siteCode", "nativity", "cover", "noxious", "growthForm", "finalIndicator"];
+        query.outFields = ["ObjectId", "scientificName", "commonName", "siteCode", "nativity", "cover", "noxious", "growthForm", "wetlandIndicator"];
 
         sitesSpeciesJoin.queryFeatures(query).then(function(e) {
             //console.log(e);
@@ -1989,7 +1984,7 @@ console.log(downloadArray);
         ];
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalTestV3_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/0"
         });
 
         relationQuerySpecies = new RelationshipQuery({
