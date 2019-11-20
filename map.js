@@ -691,7 +691,6 @@ require([
                 //     });
                 // }
             })
-            .catch(errorCallback)
     }
 
 
@@ -1126,7 +1125,7 @@ console.log(downloadArray);
 
     //Add the unique values to the ecoregionalGroup select element.
     function addToEcoLevel(values) {
-        console.log("add to select eco level");
+        console.log("add to select eco region");
         console.log(values);
         sitesCount = 0;
 
@@ -1286,7 +1285,7 @@ console.log(downloadArray);
         }
         gridDis.style.display = 'none';
         domClass.remove("mapViewDiv", 'withGrid');
-        plantSites.definitionExpression = "";
+        //plantSites.definitionExpression = "";
         document.getElementById("speciesText").value = "";
 
     }
@@ -1676,7 +1675,7 @@ console.log(downloadArray);
         plantSites.queryFeatureCount().then(function(count) {
             console.log(count);
             const query = new Query();
-            query.where = defExp + " AND confidential = '0'";
+            query.where = defExp + " AND privacyStatus = 'public'";
             plantSites.queryFeatureCount(query).then(function(countConf) {
                 //console.log(count); // prints the total number of client-side graphics to the console
                 //   document.getElementById("count").innerHTML=count + " features returned."; 
@@ -1688,9 +1687,9 @@ console.log(downloadArray);
             })
         });
 
-        if (!plantSites.visible) {
-            plantSites.visible = true;
-        }
+        // if (!plantSites.visible) {
+        //     plantSites.visible = true;
+        // }
 
     }
 
