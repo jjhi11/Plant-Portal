@@ -74,16 +74,16 @@ require([
     // will be used to display attributes of selected features
     let dataStore = new StoreAdapter({
         objectStore: new Memory({
-            idProperty: "OBJECTID"
+            idProperty: "objectid"
         })
     });
 
-    // let gridFields = ["project", "watershed", "siteCode", "ecoSystem",
-    //     "hgmClass", "wetlandType", "vegetationCondition", "coverMethod", "surveyDate"
+    // let gridFields = ["project", "watershed", "sitecode", "ecoSystem",
+    //     "hgmClass", "wetlandtype", "vegetationcondition", "coverMethod", "surveydate"
     // ];
 
-    let speciesFields = ["OBJECTID", "family", "scientificName", "commonName", "cover",
-        "nativity", "noxious", "growthForm", "wetlandIndicator", "cValue"
+    let speciesFields = ["objectid", "family", "scientificname", "commonname", "cover",
+        "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"
     ];
 
     let skecthViewModel;
@@ -112,37 +112,37 @@ require([
         if (feature.graphic.attributes.project) {
             content += "<span class='bold' title='Organization'><b>Project: </b></span>{project}<br/>";
         }
-            if (feature.graphic.attributes.siteCode) {
-                content += "<span class='bold' title='Site Code'><b>Site Code: </b></span>{siteCode}<br/>";
+            if (feature.graphic.attributes.sitecode) {
+                content += "<span class='bold' title='Site Code'><b>Site Code: </b></span>{sitecode}<br/>";
             }
-            if (feature.graphic.attributes.surveyDate) {
-                console.log(feature.graphic.attributes.surveyDate);
-                const date = moment(feature.graphic.attributes.surveyDate).format('ll');
-                content += "<span class='bold' title='Survey Date'><b>Survey Date: </b></span>{surveyDate}<br/>";
+            if (feature.graphic.attributes.surveydate) {
+                console.log(feature.graphic.attributes.surveydate);
+                const date = moment(feature.graphic.attributes.surveydate).format('ll');
+                content += "<span class='bold' title='Survey Date'><b>Survey Date: </b></span>{surveydate}<br/>";
             }
             if (feature.graphic.attributes.watershed) {
                 content += "<span class='bold' title='HGM Class'><b>Watershed: </b></span>{watershed}<br/>";
             }
-            if (feature.graphic.attributes.ecoregionalGroup) {
-                content += "<span class='bold' title='Ecological System'><b>Ecoregional Group: </b></span>{ecoregionalGroup}<br/>";
+            if (feature.graphic.attributes.ecoregionalgroup) {
+                content += "<span class='bold' title='Ecological System'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/>";
             }
-            if (feature.graphic.attributes.wetlandType) {
-                content += "<span class='bold' title='Wetland Type'><b>Wetland Type: </b></span>{wetlandType}<br/>";
+            if (feature.graphic.attributes.wetlandtype) {
+                content += "<span class='bold' title='Wetland Type'><b>Wetland Type: </b></span>{wetlandtype}<br/>";
             }
-            if (feature.graphic.attributes.projectWetlandClass) {
-                content += "<span class='bold' title='Wetland Type'><b>Project Wetland Class: </b></span>{projectWetlandClass}<br/>";
+            if (feature.graphic.attributes.projectwetlandclass) {
+                content += "<span class='bold' title='Wetland Type'><b>Project Wetland Class: </b></span>{projectwetlandclass}<br/>";
             }
-            if (feature.graphic.attributes.vegetationCondition) {
-                content += "<span class='bold' title='Vegetation Condition'><b>Vegetation Condition: </b></span>{vegetationCondition}<br/>";
+            if (feature.graphic.attributes.vegetationcondition) {
+                content += "<span class='bold' title='Vegetation Condition'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/>";
             }
-            if (feature.graphic.attributes.privacyStatus) {
-                content += "<span class='bold' title='Condition Method'><b>Privacy Status: </b></span>{privacyStatus}<br/>";
+            if (feature.graphic.attributes.privacystatus) {
+                content += "<span class='bold' title='Condition Method'><b>Privacy Status: </b></span>{privacystatus}<br/>";
             }
-            if (feature.graphic.attributes.meanC) {
-                content += "<span class='bold' title='Site Code'><b>Mean C: </b></span>{meanC}<br/>";
+            if (feature.graphic.attributes.meanc) {
+                content += "<span class='bold' title='Site Code'><b>Mean C: </b></span>{meanc}<br/>";
             }
-            if (feature.graphic.attributes.relativeNativeCover) {
-                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relativeNativeCover}<br/>";
+            if (feature.graphic.attributes.relativenativecover) {
+                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relativenativecover}<br/>";
             }
         return content;
     }
@@ -165,66 +165,67 @@ require([
     let plantLayerView;
 
     var plantSites = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer",
         title: "Plant Sites",
         visibile: true,
         outFields: ["*"],
-        //outFields: ["watershed", "wetlandType"],
+        //outFields: ["watershed", "wetlandtype"],
         popupTemplate: {
             title: "Plant Sites",
             actions: [speciesAction],
-            content: [{
-                    type: "fields",
-                    fieldInfos: [{
-                        fieldName: "siteCode",
-                             visible: false,
-                             label: "Site Code" 
-                    },
-                    {
-                        fieldName: "surveyDate",
-                             visible: false,
-                             label: "Survey Date" 
-                    },
-                    {
-                        fieldName: "coverMethod",
-                             visible: false,
-                             label: "Cover Method" 
-                    },
-                    {
-                        fieldName: "Organization",
-                             visible: false,
-                             label: "Organization" 
-                    },
-                    {
-                        fieldName: "ecoSystem",
-                             visible: false,
-                             label: "Ecological System" 
-                    },
-                    {
-                        fieldName: "hgmClass",
-                             visible: false,
-                             label: "HGM Class" 
-                    },
-                    {
-                        fieldName: "wetlandType",
-                             visible: false,
-                             label: "Wetland Type" 
-                    },
-                    {
-                        fieldName: "vegetationCondition",
-                             visible: false,
-                             label: "Wetland Condition" 
-                    },
-                    {
-                        fieldName: "conditionMethod",
-                             visible: false,
-                             label: "Condition Method" 
-                    }
-                    ]
-            },
+            content: [
+            //     {
+            //         type: "fields",
+            //         fieldInfos: [{
+            //             fieldName: "sitecode",
+            //                  visible: false,
+            //                  label: "Site Code" 
+            //         },
+            //         {
+            //             fieldName: "surveydate",
+            //                  visible: false,
+            //                  label: "Survey Date" 
+            //         },
+            //         {
+            //             fieldName: "coverMethod",
+            //                  visible: false,
+            //                  label: "Cover Method" 
+            //         },
+            //         {
+            //             fieldName: "Organization",
+            //                  visible: false,
+            //                  label: "Organization" 
+            //         },
+            //         {
+            //             fieldName: "ecoSystem",
+            //                  visible: false,
+            //                  label: "Ecological System" 
+            //         },
+            //         {
+            //             fieldName: "hgmClass",
+            //                  visible: false,
+            //                  label: "HGM Class" 
+            //         },
+            //         {
+            //             fieldName: "wetlandtype",
+            //                  visible: false,
+            //                  label: "Wetland Type" 
+            //         },
+            //         {
+            //             fieldName: "vegetationcondition",
+            //                  visible: false,
+            //                  label: "Wetland Condition" 
+            //         },
+            //         {
+            //             fieldName: "conditionMethod",
+            //                  visible: false,
+            //                  label: "Condition Method" 
+            //         }
+            //         ]
+            // },
                     {
                     type: "text",
-                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{siteCode}<br><b>Survey Date: </b>{surveyDate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalGroup}<br><b>Wetland Type: </b>{wetlandType}<br><b>Project Wetland Class: </b>{projectWetlandClass}<br><b>Vegetation Condition: </b>{vegetationCondition}<br><b>Privacy Status: </b>{privacyStatus}<br><b>Mean C: </b>{meanC}<br><b>Relative Native Cover: </b>{relativeNativeCover}<br>"
+                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{sitecode}<br><b>Survey Date: </b>{surveydate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalgroup}<br><b>Wetland Type: </b>{wetlandtype}<br><b>Project Wetland Class: </b>{projectwetlandclass}<br><b>Vegetation Condition: </b>{vegetationcondition}<br><b>Privacy Status: </b>{privacystatus}<br><b>Mean C: </b>{meanc}<br><b>Relative Native Cover: </b>{relativenativecover}<br>"
                 },
                 {
                     type: "attachments"
@@ -240,16 +241,16 @@ require([
 
 
     var sitesSpeciesJoin = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/sitesSpeciesJoinV4/FeatureServer",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/sitesSpeciesJoinV5/FeatureServer",
         //url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/siteSpeciesJoin/FeatureServer",
         // title: "Plant Sites",
         // visibile: true,
         outFields: ["*"],
-        // outFields: ["watershed", "wetlandType"],
+        // outFields: ["watershed", "wetlandtype"],
         // popupTemplate: {
         //     title: "Plant Sites",
         //     actions: [speciesAction],
-        //     content: "{siteCode:contentSites}{surveyDate:contentSites}{coverMethod:contentSites}{Organization:contentSites}{ecoSystem:contentSites}{hgmClass:contentSites}{wetlandType:contentSites}{vegetationCondition:contentSites}{conditionMethod:contentSites}"
+        //     content: "{sitecode:contentSites}{surveydate:contentSites}{coverMethod:contentSites}{Organization:contentSites}{ecoSystem:contentSites}{hgmClass:contentSites}{wetlandtype:contentSites}{vegetationcondition:contentSites}{conditionMethod:contentSites}"
         // },
         // elevationInfo: [{
         //     mode: "on-the-ground"
@@ -342,12 +343,14 @@ require([
      ****************************************************/
     function selectFeatures(geometry) {
         mapView.graphics.removeAll();
+        console.log(geometry);
 
         // create a query and set its geometry parameter to the
         // polygon that was drawn on the view
         var query = {
             geometry: geometry,
-            outFields: ["OBJECTID", "project", "siteCode", "surveyDate", "watershed", "ecoregionalGroup", "wetlandType", "projectWetlandClass", "vegetationCondition", "privacyStatus", "meanC", "relativeNativeCover"]
+            outFields: ["*"]
+            //outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"]
         };
 
         // query graphics from the csv layer view. Geometry set for the query
@@ -355,7 +358,7 @@ require([
         plantLayerView
             .queryFeatures(query)
             .then(function(results) {
-                gridFields = ["OBJECTID", "project", "siteCode", "surveyDate", "watershed", "ecoregionalGroup", "wetlandType", "projectWetlandClass", "vegetationCondition", "privacyStatus", "meanC", "relativeNativeCover"];
+                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
                 console.log(results);
                 resultsArray = results.features;
                 var graphics = results.features;
@@ -457,7 +460,7 @@ require([
             }
         }).map(function(field) {
             //console.log(field);
-            if (field.name == "OBJECTID") {
+            if (field.name == "objectid") {
                 console.log("HIDE COLUMN " + field.name);
                 return {
                     field: field.name,
@@ -494,7 +497,7 @@ require([
         if (grid.columns[0].field == "species") {
 
             console.info("SummarySpecies");
-            grid.on("th.field-commonName:mouseover", function(evt) {
+            grid.on("th.field-commonname:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Common Name from USDA Plants";
             });
@@ -502,11 +505,11 @@ require([
                 console.info("hover");
                 evt.target.title = "Scientific Name from USDA Plants";
             });
-            grid.on("th.field-speciesCount:mouseover", function(evt) {
+            grid.on("th.field-speciescount:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Number of selected sites where species found (including both public and confidential sites)";
             });
-            grid.on("th.field-meanCover:mouseover", function(evt) {
+            grid.on("th.field-meancover:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Mean cover at sites where species was found";
             });
@@ -518,7 +521,7 @@ require([
                 console.info("hover");
                 evt.target.title = "Noxious status in Utah";
             });
-            grid.on("th.field-growthForm:mouseover", function(evt) {
+            grid.on("th.field-growthform:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Growth form";
             });
@@ -549,7 +552,7 @@ require([
                 console.info("hover");
                 evt.target.title = "Watershed";
             });
-            grid.on("th.field-siteCode:mouseover", function(evt) {
+            grid.on("th.field-sitecode:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Site Code";
             });
@@ -557,7 +560,7 @@ require([
                 console.info("hover");
                 evt.target.title = "NatureServe's Ecological System";
             });
-            grid.on("th.field-surveyDate:mouseover", function(evt) {
+            grid.on("th.field-surveydate:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Survey Date";
             });
@@ -565,7 +568,7 @@ require([
                 console.info("hover");
                 evt.target.title = "HGM Class";
             });
-            grid.on("th.field-wetlandType:mouseover", function(evt) {
+            grid.on("th.field-wetlandtype:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Wetland Type";
             });
@@ -591,19 +594,19 @@ require([
         mapView.graphics.removeAll();
         var row = event.rows[0]
         console.log(row);
-        var id = row.data.OBJECTID;
+        var id = row.data.objectid;
         console.log(id);
 
-        // setup a query by specifying objectIds
+        // setup a query by specifying objectids
         //   var query = {
-        //     objectIds: [parseInt(id)],
+        //     objectids: [parseInt(id)],
         //     outFields: ["*"],
         //     returnGeometry: true
         //   };
 
         var query = plantSites.createQuery();
 
-        query.where = "OBJECTID = '" + id + "'";
+        query.where = "objectid = '" + id + "'";
         query.returnGeometry = true;
         query.outFields = ["*"],
 
@@ -716,7 +719,7 @@ require([
 
 
     var hucLayer = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/1",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/1",
         title: "HUCs",
         visibile: true,
         popupTemplate: {
@@ -782,6 +785,7 @@ console.log("go on and create grid");
 
         createGrid(response.fields);
         console.log(response.fields);
+        console.log(graphics);
         console.log(graphics[0].attributes);
         if (graphics[0].attributes) {
             console.log("has attributes");
@@ -804,13 +808,14 @@ console.log("go on and create grid");
         } else {
             console.log("no attributes");
             var data = graphics;
+
         }
 
 
-        //format the surveyDate 
+        //format the surveydate 
         for (var i = 0; i < data.length; i++) {
-            var dateString = moment(data[i].surveyDate).format('l');
-            data[i].surveyDate = dateString;
+            var dateString = moment(data[i].surveydate).format('l');
+            data[i].surveydate = dateString;
 
         }
 
@@ -838,9 +843,9 @@ console.log("go on and create grid");
             console.log(args);
 
             var downloadArray = args.data;
-            //delete OBJECTID from the download array
+            //delete objectid from the download array
             downloadArray.forEach(function(keytv){
-                delete keytv.OBJECTID;
+                delete keytv.objectid;
             })
 
 console.log(downloadArray);
@@ -903,7 +908,7 @@ console.log(downloadArray);
     //get elements from the dom      
     var waterShedSelect = document.getElementById("waterShed");
     //var hgmSelect = document.getElementById("hgmClass");
-    var typeSelect = document.getElementById("wetlandType");
+    var typeSelect = document.getElementById("wetlandtype");
     var conditionSelect = document.getElementById("wetlandCondition");
     var speciesSelect = document.getElementById("speciesText");
 
@@ -911,14 +916,14 @@ console.log(downloadArray);
 
     //Query Widget Panels
 
-    // query the species layer for commonName values
+    // query the species layer for commonname values
     mapView.when(function() {
             return plantSites.when(function() {
                 var typeQuery = new Query();
                 typeQuery.where = "1=1";
-                typeQuery.outFields = ["OBJECTID"];
+                typeQuery.outFields = ["objectid"];
                 //typeQuery.returnDistinctValues = true;
-                //typeQuery.orderByFields = ["wetlandType"];
+                //typeQuery.orderByFields = ["wetlandtype"];
                 return plantSites.queryFeatures(typeQuery);
             });
 
@@ -938,17 +943,17 @@ console.log(downloadArray);
         var oldArray = values["features"];
         oldArray.forEach(function(ftrs) {
 
-            var att = ftrs.attributes.OBJECTID;
+            var att = ftrs.attributes.objectid;
 
             idArray.push(att);
         });
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
         });
 
         var speciesRelateQuery = new RelationshipQuery({
             objectIds: idArray,
-            outFields: ["scientificName"],
+            outFields: ["scientificname"],
             //returnGeometry: true,
             relationshipId: 0
         });
@@ -965,7 +970,7 @@ console.log(downloadArray);
             var namesArray = [];
             formatArray.forEach(function(names) {
                 names.forEach(function(et) {
-                    var poop = et.attributes.scientificName;
+                    var poop = et.attributes.scientificname;
                     namesArray.push(poop);
                 })
             });
@@ -1015,18 +1020,18 @@ console.log(downloadArray);
         // typeSelect.remove(1);
     }
 
-    // query the plantSites layer for wetlandType values
+    // query the plantSites layer for wetlandtype values
 
     query(".calcite-panels .panel .panel-collapse").on("show.bs.collapse", function() {
         console.log("Query Panel Open");
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
         });
 
         // var typeQuery = new Query();
         // typeQuery.where = "1=1";
-        // typeQuery.outFields = ["wetlandType"];
+        // typeQuery.outFields = ["wetlandtype"];
         // typeQuery.returnDistinctValues = true;
 
         // querySpecies.execute(typeQuery).then(function(typeRslts) {
@@ -1044,7 +1049,7 @@ console.log(downloadArray);
 
         var ecoQuery = new Query();
         ecoQuery.where = "1=1";
-        ecoQuery.outFields = ["ecoregionalGroup"];
+        ecoQuery.outFields = ["ecoregionalgroup"];
         ecoQuery.returnDistinctValues = true;
 
         querySpecies.execute(ecoQuery).then(function(ecoRslts) {
@@ -1068,7 +1073,7 @@ console.log(downloadArray);
 
    
 
-    // Add the unique values to the wetlandType select element.
+    // Add the unique values to the wetlandtype select element.
     function addToSelect(values) {
         console.log("add to select 1");
         console.log(values);
@@ -1093,7 +1098,7 @@ console.log(downloadArray);
 
         values.features.forEach(function(value) {
             var option = domConstruct.create("option");
-            option.text = value.attributes.wetlandType;
+            option.text = value.attributes.wetlandtype;
             typeSelect.add(option);
         });
 
@@ -1123,7 +1128,7 @@ console.log(downloadArray);
     }
 
 
-    //Add the unique values to the ecoregionalGroup select element.
+    //Add the unique values to the ecoregionalgroup select element.
     function addToEcoLevel(values) {
         console.log("add to select eco region");
         console.log(values);
@@ -1140,13 +1145,13 @@ console.log(downloadArray);
         values.features.forEach(function(value) {
             console.log("populating drop down");
             var option = domConstruct.create("option");
-            option.text = value.attributes.ecoregionalGroup;
+            option.text = value.attributes.ecoregionalgroup;
             ecoLevel.add(option);
         });
         //hgmSelect.remove(1);
     }
 
-    // Add the unique values to the vegetationCondition select element.
+    // Add the unique values to the vegetationcondition select element.
     function addToSelect4(values) {
         console.log("add to select 4");
         console.log(values);
@@ -1160,7 +1165,7 @@ console.log(downloadArray);
 
         values.features.forEach(function(value) {
             var option = domConstruct.create("option");
-            option.text = value.attributes.vegetationCondition;
+            option.text = value.attributes.vegetationcondition;
             conditionSelect.add(option);
         });
 
@@ -1203,9 +1208,9 @@ console.log(downloadArray);
         //     waterShedSelect.remove(i);
         // }
 
-        weQuery.outFields = ["wetlandType"];
+        weQuery.outFields = ["wetlandtype"];
         weQuery.returnDistinctValues = true;
-        weQuery.orderByFields = ["wetlandType"];
+        weQuery.orderByFields = ["wetlandtype"];
         weQuery.where = "1=1";
         plantSites.queryFeatures(weQuery).then(function(eet) {
             console.log("Wetland Type Values 1=1", eet);
@@ -1220,9 +1225,9 @@ console.log(downloadArray);
             addToSelect2(e);
         })
 
-        conditionQuery.outFields = ["vegetationCondition"];
+        conditionQuery.outFields = ["vegetationcondition"];
         conditionQuery.returnDistinctValues = true;
-        conditionQuery.orderByFields = ["vegetationCondition"];
+        conditionQuery.orderByFields = ["vegetationcondition"];
         conditionQuery.where = "1=1";
         plantSites.queryFeatures(conditionQuery).then(function(ett) {
             addToSelect4(ett);
@@ -1294,29 +1299,29 @@ console.log(downloadArray);
     function doSpeciesQuery() {
         console.log("Species Querying");
         plantSites.definitionExpression = "";
-        var speciesCommonName = speciesSelect.value;
-        console.log(speciesCommonName);
+        var speciescommonname = speciesSelect.value;
+        console.log(speciescommonname);
 
         var speciesQueryTask = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/4",
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/4",
         });
 
-        //Query the related table for names that match commonName field with the user selected option in the DOM
+        //Query the related table for names that match commonname field with the user selected option in the DOM
         var speciesQuery = new Query();
         speciesQuery.outFields = ["*"];
-        speciesQuery.where = "scientificName = '" + speciesCommonName + "'";
+        speciesQuery.where = "scientificname = '" + speciescommonname + "'";
 
         speciesQueryTask.execute(speciesQuery).then(function(results) {
             var oldArray = results.features;
             specidArray = [];
             oldArray.forEach(function(ftrs) {
 
-                var att = ftrs.attributes.OBJECTID;
+                var att = ftrs.attributes.objectid;
 
                 specidArray.push(att);
             });
 
-            //setup the relationship query with the plantSites featurelayer using the objectIDs from the related table query
+            //setup the relationship query with the plantSites featurelayer using the objectids from the related table query
             var querySites = new RelationshipQuery({
                 objectIds: specidArray,
                 outFields: ["*"],
@@ -1338,8 +1343,8 @@ console.log(downloadArray);
                 getArray.forEach(function(et) {
 
                     et.forEach(function(ef) {
-                        var eck = ef.attributes.OBJECTID;
-                        dashArray.push("OR OBJECTID = '" + eck + "' ");
+                        var eck = ef.attributes.objectid;
+                        dashArray.push("OR objectid = '" + eck + "' ");
                     })
                 });
 
@@ -1351,9 +1356,9 @@ console.log(downloadArray);
                 plantSites.definitionExpression = defExp;
 
                 var query = plantSites.createQuery();
-                gridFields = ["OBJECTID", "project", "siteCode", "surveyDate", "watershed", "ecoregionalGroup", "wetlandType", "projectWetlandClass", "vegetationCondition", "privacyStatus", "meanC", "relativeNativeCover"];
+                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
                 query.where = defExp;
-                query.outFields = ["OBJECTID", "project", "siteCode", "surveyDate", "watershed", "ecoregionalGroup", "wetlandType", "projectWetlandClass", "vegetationCondition", "privacyStatus", "meanC", "relativeNativeCover"];
+                query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
 
                 plantSites.queryFeatures(query).then(function(e) {
                     console.log(e);
@@ -1388,7 +1393,7 @@ console.log(downloadArray);
         console.log("doQuery");
         doGridClear();
 
-        gridFields = ["OBJECTID", "project", "siteCode", "surveyDate", "watershed", "ecoregionalGroup", "wetlandType", "projectWetlandClass", "vegetationCondition", "privacyStatus", "meanC", "relativeNativeCover"];
+        gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
 
 
 
@@ -1403,31 +1408,31 @@ console.log(downloadArray);
 
         //134
         if (valueOne != "All" && valueTwo == "All" && valueFour != "All") {
-            definitionExp = "wetlandType = '" + valueOne + "' AND vegetationCondition = '" + valueFour + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //124 
         else if (valueOne != "All" && valueTwo != "All" && valueFour != "All") {
-            definitionExp = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //234 
         else if (valueOne == "All" && valueTwo != "All" && valueFour != "All") {
-            definitionExp = "watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            definitionExp = "watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //123 
         else if (valueOne != "All" && valueTwo != "All" && valueFour == "All") {
-            definitionExp = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
         }
         //14
         else if (valueOne != "All" && valueTwo == "All" && valueFour != "All") {
-            definitionExp = "wetlandType = '" + valueOne + "' AND vegetationCondition = '" + valueFour + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //4
         else if (valueOne == "All" && valueTwo == "All" && valueFour != "All") {
-            definitionExp = "vegetationCondition = '" + valueFour + "'";
+            definitionExp = "vegetationcondition = '" + valueFour + "'";
         }
         //1
         else if (valueOne != "All" && valueTwo == "All" && valueFour == "All") {
-            definitionExp = "wetlandType = '" + valueOne + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "'";
         }
         //2
         else if (valueOne == "All" && valueTwo != "All" && valueFour == "All") {
@@ -1435,15 +1440,15 @@ console.log(downloadArray);
         }
         //24
         else if (valueOne == "All" && valueTwo != "All" && valueFour != "All") {
-            definitionExp = "watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            definitionExp = "watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //1234 
         else if (valueOne != "All" && valueTwo != "All" && valueFour != "All") {
-            definitionExp = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //12
         else if (valueOne != "All" && valueTwo != "All" && valueFour == "All") {
-            definitionExp = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
         }
         //23
         else if (valueOne == "All" && valueTwo != "All" && valueFour == "All") {
@@ -1451,11 +1456,11 @@ console.log(downloadArray);
         }
         //13 
         else if (valueOne != "All" && valueTwo == "All" && valueFour == "All") {
-            definitionExp = "wetlandType = '" + valueOne + "'";
+            definitionExp = "wetlandtype = '" + valueOne + "'";
         }
         //34
         else if (valueOne == "All" && valueTwo == "All" && valueFour != "All") {
-            definitionExp = "vegetationCondition = '" + valueFour + "'";
+            definitionExp = "vegetationcondition = '" + valueFour + "'";
         } 
         else {
             definitionExp = "";
@@ -1464,11 +1469,11 @@ console.log(downloadArray);
         console.log(definitionExp);
 
         if (ecoSelected != "All" && definitionExp != "") {
-            plantSites.definitionExpression =  definitionExp + " AND ecoregionalGroup = '" + ecoSelected + "'";
+            plantSites.definitionExpression =  definitionExp + " AND ecoregionalgroup = '" + ecoSelected + "'";
         } else if (ecoSelected == "All" && definitionExp != "") {
             plantSites.definitionExpression =  definitionExp;
         } else if (ecoSelected != "All" && definitionExp == "") {
-            plantSites.definitionExpression =  "ecoregionalGroup = '" + ecoSelected + "'";
+            plantSites.definitionExpression =  "ecoregionalgroup = '" + ecoSelected + "'";
         }
 
         console.log(plantSites.definitionExpression);
@@ -1487,7 +1492,7 @@ console.log(downloadArray);
 
         var query = plantSites.createQuery();
         //query.where = "STATE_NAME = 'Washington'";
-        query.outFields = ["OBJECTID", "project", "siteCode", "surveyDate", "watershed", "ecoregionalGroup", "wetlandType", "projectWetlandClass", "vegetationCondition", "privacyStatus", "meanC", "relativeNativeCover"];
+        query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
 
         plantSites.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -1507,46 +1512,46 @@ console.log(downloadArray);
             });
 
             var fieldArray = [
-                //{alias: 'ObjectId', name: 'ObjectId'}, 
+                //{alias: 'objectid', name: 'objectid'}, 
                 {
                     alias: 'Watershed',
                     name: 'watershed'
                 },
                 {
                     alias: 'Site Code',
-                    name: 'siteCode'
+                    name: 'sitecode'
                 },
                 {
                     alias: 'Ecoregional Group',
-                    name: 'ecoregionalGroup'
+                    name: 'ecoregionalgroup'
                 },
                 {
                     alias: 'Survey Date',
-                    name: 'surveyDate'
+                    name: 'surveydate'
                 },
                 {
                     alias: 'Project Wetland Class',
-                    name: 'projectWetlandClass'
+                    name: 'projectwetlandclass'
                 },
                 {
                     alias: 'Wetland Type',
-                    name: 'wetlandType'
+                    name: 'wetlandtype'
                 },
                 {
                     alias: 'Vegetation Condition',
-                    name: 'vegetationCondition'
+                    name: 'vegetationcondition'
                 },
                 {
                     alias: 'Privacy Status',
-                    name: 'privacyStatus'
+                    name: 'privacystatus'
                 },
                 {
                     alias: 'Mean C',
-                    name: 'meanC'
+                    name: 'meanc'
                 },
                 {
                     alias: 'Relative Native Cover',
-                    name: 'relativeNativeCover'
+                    name: 'relativenativecover'
                 },
             ];
 
@@ -1572,31 +1577,31 @@ console.log(downloadArray);
 
         //134
         if (valueOne != "All" && valueTwo == "All" && valueFour != "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "' AND vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //124 
         else if (valueOne != "All" && valueTwo != "All" && valueFour != "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //234 
         else if (valueOne == "All" && valueTwo != "All" && valueFour != "All") {
-            plantSites.definitionExpression = "watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //123 
         else if (valueOne != "All" && valueTwo != "All" && valueFour == "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
         }
         //14
         else if (valueOne != "All" && valueTwo == "All" && valueFour != "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "' AND vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //4
         else if (valueOne == "All" && valueTwo == "All" && valueFour != "All") {
-            plantSites.definitionExpression = "vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "vegetationcondition = '" + valueFour + "'";
         }
         //1
         else if (valueOne != "All" && valueTwo == "All" && valueFour == "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "'";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "'";
         }
         //2
         else if (valueOne == "All" && valueTwo != "All" && valueFour == "All") {
@@ -1604,15 +1609,15 @@ console.log(downloadArray);
         }
         //24
         else if (valueOne == "All" && valueTwo != "All" && valueFour != "All") {
-            plantSites.definitionExpression = "watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //1234 
         else if (valueOne != "All" && valueTwo != "All" && valueFour != "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //12
         else if (valueOne != "All" && valueTwo != "All" && valueFour == "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
         }
         //23
         else if (valueOne == "All" && valueTwo != "All" && valueFour == "All") {
@@ -1620,11 +1625,11 @@ console.log(downloadArray);
         }
         //13 
         else if (valueOne != "All" && valueTwo == "All" && valueFour == "All") {
-            plantSites.definitionExpression = "wetlandType = '" + valueOne + "";
+            plantSites.definitionExpression = "wetlandtype = '" + valueOne + "";
         }
         //34
         else if (valueOne == "All" && valueTwo == "All" && valueFour != "All") {
-            plantSites.definitionExpression = "vegetationCondition = '" + valueFour + "'";
+            plantSites.definitionExpression = "vegetationcondition = '" + valueFour + "'";
         } 
         else {
             plantSites.definitionExpression = "";
@@ -1666,7 +1671,7 @@ console.log(downloadArray);
 
 
 
-        var defExp = "ecoregionalGroup = '" + valueThree + "'";
+        var defExp = "ecoregionalgroup = '" + valueThree + "'";
         console.log(defExp);
 
         plantSites.definitionExpression = defExp;
@@ -1675,7 +1680,7 @@ console.log(downloadArray);
         plantSites.queryFeatureCount().then(function(count) {
             console.log(count);
             const query = new Query();
-            query.where = defExp + " AND privacyStatus = 'public'";
+            query.where = defExp + " AND privacystatus = 'public'";
             plantSites.queryFeatureCount(query).then(function(countConf) {
                 //console.log(count); // prints the total number of client-side graphics to the console
                 //   document.getElementById("count").innerHTML=count + " features returned."; 
@@ -1702,7 +1707,7 @@ console.log(downloadArray);
         console.log("doSpeciesSummary");
         doSpeciesSummaryClear();
 
-        gridFields = ["scientificName", "commonName", "speciesCount", "meanCover", "nativity", "noxious", "growthForm", "wetlandIndicator"];
+        gridFields = ["family", "scientificname", "commonname", "speciescount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
         var queryParams = "";
 
@@ -1716,31 +1721,31 @@ console.log(downloadArray);
 
         //134
         if (valueOne != "All" && valueTwo == "All" && valueFour != "All") {
-            queryParams = "wetlandType = '" + valueOne + "' AND vegetationCondition = '" + valueFour + "'";
+            queryParams = "wetlandtype = '" + valueOne + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //124 
         else if (valueOne != "All" && valueTwo != "All" && valueFour != "All") {
-            queryParams = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            queryParams = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //234 
         else if (valueOne == "All" && valueTwo != "All" && valueFour != "All") {
-            queryParams = "watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            queryParams = "watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //123 
         else if (valueOne != "All" && valueTwo != "All" && valueFour == "All") {
-            queryParams = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
+            queryParams = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
         }
         //14
         else if (valueOne != "All" && valueTwo == "All" && valueFour != "All") {
-            queryParams = "wetlandType = '" + valueOne + "' AND vegetationCondition = '" + valueFour + "'";
+            queryParams = "wetlandtype = '" + valueOne + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //4
         else if (valueOne == "All" && valueTwo == "All" && valueFour != "All") {
-            queryParams = "vegetationCondition = '" + valueFour + "'";
+            queryParams = "vegetationcondition = '" + valueFour + "'";
         }
         //1
         else if (valueOne != "All" && valueTwo == "All" && valueFour == "All") {
-            queryParams = "wetlandType = '" + valueOne + "'";
+            queryParams = "wetlandtype = '" + valueOne + "'";
         }
         //2
         else if (valueOne == "All" && valueTwo != "All" && valueFour == "All") {
@@ -1748,15 +1753,15 @@ console.log(downloadArray);
         }
         //24
         else if (valueOne == "All" && valueTwo != "All" && valueFour != "All") {
-            queryParams = "watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            queryParams = "watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //1234 
         else if (valueOne != "All" && valueTwo != "All" && valueFour != "All") {
-            queryParams = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationCondition = '" + valueFour + "'";
+            queryParams = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "' AND vegetationcondition = '" + valueFour + "'";
         }
         //12
         else if (valueOne != "All" && valueTwo != "All" && valueFour == "All") {
-            queryParams = "wetlandType = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
+            queryParams = "wetlandtype = '" + valueOne + "' AND watershed = '" + valueTwo + "'";
         }
         //23
         else if (valueOne == "All" && valueTwo != "All" && valueFour == "All") {
@@ -1764,22 +1769,22 @@ console.log(downloadArray);
         }
         //13 
         else if (valueOne != "All" && valueTwo == "All" && valueFour == "All") {
-            queryParams = "wetlandType = '" + valueOne + "'";
+            queryParams = "wetlandtype = '" + valueOne + "'";
         }
         //34
         else if (valueOne == "All" && valueTwo == "All" && valueFour != "All") {
-            queryParams = "vegetationCondition = '" + valueFour + "'";
+            queryParams = "vegetationcondition = '" + valueFour + "'";
         } 
         else {
             queryParams = "";
         }
         console.log(queryParams);
         if (ecoSelected != "All" && queryParams != "") {
-            plantSites.definitionExpression =  queryParams + " AND ecoregionalGroup = '" + ecoSelected + "'";
+            plantSites.definitionExpression =  queryParams + " AND ecoregionalgroup = '" + ecoSelected + "'";
         } else if (ecoSelected == "All" && queryParams != "") {
             plantSites.definitionExpression =  queryParams;
         } else if (ecoSelected != "All" && queryParams == "") {
-            plantSites.definitionExpression =  "ecoregionalGroup = '" + ecoSelected + "'";
+            plantSites.definitionExpression =  "ecoregionalgroup = '" + ecoSelected + "'";
         }
 
 
@@ -1799,10 +1804,11 @@ console.log(downloadArray);
 
         var query = sitesSpeciesJoin.createQuery();
         query.where = queryParams;
-        query.outFields = ["OBJECTID", "scientificName", "commonName", "siteCode", "nativity", "cover", "noxious", "growthForm", "wetlandIndicator"];
+        query.outFields = ["*"];
+        //query.outFields = ["scientificname", "commonname", "speciescount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "family", "cvalue"];
 
         sitesSpeciesJoin.queryFeatures(query).then(function(e) {
-            //console.log(e);
+            console.log(e);
 
 
 
@@ -1833,7 +1839,7 @@ console.log(downloadArray);
             //count the number of sites each species is present at
             for (var i = 0; i < summaryArray.length; i++) {
                 //var cover = summaryArray[i].cover;
-                var num = summaryArray[i].scientificName;
+                var num = summaryArray[i].scientificname;
                 var coverSum = "";
 
                 if (counts[num] = counts[num]) {
@@ -1846,9 +1852,9 @@ console.log(downloadArray);
             }
             //console.log(counts);
 
-            //sum the cover values for each scientificName
+            //sum the cover values for each scientificname
             totals = summaryArray.reduce(function(r, o) {
-                (r[o.scientificName]) ? r[o.scientificName] += o.cover: r[o.scientificName] = o.cover;
+                (r[o.scientificname]) ? r[o.scientificname] += o.cover: r[o.scientificname] = o.cover;
                 return r;
             }, []);
 
@@ -1860,8 +1866,8 @@ console.log(downloadArray);
                 for (const [specie, count] of entries) {
                     //console.log(count + specie);
                     //console.log(summaryArray[i].species);
-                    if (specie == summaryArray[i].scientificName) {
-                        summaryArray[i].speciesCount = count;
+                    if (specie == summaryArray[i].scientificname) {
+                        summaryArray[i].speciescount = count;
                     }
 
                 }
@@ -1873,13 +1879,13 @@ console.log(downloadArray);
             //add the mean cover to the summaryArray
             for (var i = 0; i < summaryArray.length; i++) {
                 const entries = Object.entries(totals)
-                const totCount = summaryArray[i].speciesCount;
+                const totCount = summaryArray[i].speciescount;
                 for (const [specie, count] of entries) {
                     //console.log(count + specie);
                     //console.log(summaryArray[i].species);
-                    if (specie == summaryArray[i].scientificName) {
+                    if (specie == summaryArray[i].scientificname) {
                         var meanAvg = count / totCount;
-                        summaryArray[i].meanCover = meanAvg.toFixed(1);
+                        summaryArray[i].meancover = meanAvg.toFixed(1);
                     }
 
                 }
@@ -1889,12 +1895,12 @@ console.log(downloadArray);
             console.log(summaryArray);
             //convert menaCover from string to integer
             for (var i in summaryArray) {
-                summaryArray[i].meanCover = +summaryArray[i].meanCover;
+                summaryArray[i].meancover = +summaryArray[i].meancover;
             }
 
             console.log(summaryArray);
 
-            //remove duplicate entries based on species
+            //remove duplicate entries based on scientificname
             function removeDuplicates(originalArray, prop) {
                 var newArray = [];
                 var lookupObject = {};
@@ -1909,25 +1915,25 @@ console.log(downloadArray);
                 return newArray;
             }
 
-            var uniqueArray = removeDuplicates(summaryArray, "species");
+            var uniqueArray = removeDuplicates(summaryArray, "scientificname");
 
             var fieldArray = [
-                //{alias: 'ObjectId', name: 'ObjectId'}, 
+                //{alias: 'objectid', name: 'objectid'}, 
                 {
                     alias: 'Scientific Name',
-                    name: 'scientificName'
+                    name: 'scientificname'
                 },
                 {
                     alias: 'Common Name',
-                    name: 'commonName'
+                    name: 'commonname'
                 },
                 {
                     alias: 'Site Count',
-                    name: 'speciesCount'
+                    name: 'speciescount'
                 },
                 {
                     alias: 'Mean Cover',
-                    name: 'meanCover'
+                    name: 'meancover'
                 },
                 {
                     alias: 'Nativity',
@@ -1939,11 +1945,19 @@ console.log(downloadArray);
                 },
                 {
                     alias: 'Growth Form',
-                    name: 'growthForm'
+                    name: 'growthform'
                 },
                 {
                     alias: 'Wetland Indicator',
-                    name: 'wetlandIndicator'
+                    name: 'wetlandindicator'
+                },
+                {
+                    alias: 'Family',
+                    name: 'family'
+                },
+                {
+                    alias: 'C-Value',
+                    name: 'cvalue'
                 },
             ];
 
@@ -1980,24 +1994,24 @@ console.log(downloadArray);
         //mapView.popup.close();
         console.log("doQuerySpecies");
         //doClear();
-        gridFields = ["scientificName", "commonName", "growthForm", "nativity",
-            "wetlandIndicator", "cover", "family"
+        gridFields = ["scientificname", "commonname", "growthform", "nativity", "noxious",
+            "wetlandindicator", "family", "cvalue"
         ];
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV4_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
         });
 
         relationQuerySpecies = new RelationshipQuery({
-            objectIds: [objectID],
-            outFields: ["OBJECTID", "scientificName", "commonName", "growthForm", "nativity", "wetlandIndicator", "cover", "family"],
+            objectIds: [objectid],
+            outFields: ["objectid", "scientificname", "commonname", "growthform", "nativity", "noxious", "wetlandindicator", "family", "cvalue"],
             relationshipId: 0
         });
 
         querySpecies.executeRelationshipQuery(relationQuerySpecies).then(function(rslts) {
             //console.log(rslts);
 
-            var poop = rslts[objectID];
+            var poop = rslts[objectid];
 
             poop.fields = gridFields;
 
@@ -2007,7 +2021,7 @@ console.log(downloadArray);
             });
 
             console.log(poop);
-            getResults(rslts[objectID]);
+            getResults(rslts[objectid]);
 
         });
 
@@ -2020,7 +2034,7 @@ console.log(downloadArray);
         //defQuery();
         type1 = evt.target.value;
         console.log(type1);
-        var valueOne = waterShedSelect.options[waterShedSelect.selectedIndex].value;
+       // var valueOne = waterShedSelect.options[waterShedSelect.selectedIndex].value;
 
     })
 
@@ -2047,14 +2061,14 @@ console.log(downloadArray);
 
 
 
-        sqlQuery = "ecoregionalGroup = '" + type4 + "'";
+        sqlQuery = "ecoregionalgroup = '" + type4 + "'";
 
         console.log(sqlQuery);
 
 
-        weQuery.outFields = ["wetlandType"];
+        weQuery.outFields = ["wetlandtype"];
         weQuery.returnDistinctValues = true;
-        weQuery.orderByFields = ["wetlandType"];
+        weQuery.orderByFields = ["wetlandtype"];
         weQuery.where = sqlQuery;
         plantSites.queryFeatures(weQuery).then(function(e) {
             console.log(e);
@@ -2069,9 +2083,9 @@ console.log(downloadArray);
             addToSelect2(et);
         })
 
-        conditionQuery.outFields = ["vegetationCondition"];
+        conditionQuery.outFields = ["vegetationcondition"];
         conditionQuery.returnDistinctValues = true;
-        conditionQuery.orderByFields = ["vegetationCondition"];
+        conditionQuery.orderByFields = ["vegetationcondition"];
         conditionQuery.where = sqlQuery;
         plantSites.queryFeatures(conditionQuery).then(function(ett) {
             addToSelect4(ett);
@@ -2104,8 +2118,8 @@ console.log(downloadArray);
     // species dgrid function
     watchUtils.when(mapView.popup, "selectedFeature", function species(evt) {
 
-        objectID = mapView.popup.selectedFeature.attributes.OBJECTID;
-        console.log(objectID);
+        objectid = mapView.popup.selectedFeature.attributes.objectid;
+        console.log(objectid);
 
     }); // end watchUtil
 
@@ -2115,8 +2129,8 @@ console.log(downloadArray);
         if (event.action.id === "related-species") {
             console.log("species action clicked");
             singleSiteSpeciesID = "";
-            console.log(event.target.features[0].attributes.OBJECTID);
-            singleSiteSpeciesID = event.target.features[0].attributes.OBJECTID;
+            console.log(event.target.features[0].attributes.objectid);
+            singleSiteSpeciesID = event.target.features[0].attributes.objectid;
             doQuerySpecies();
         }
     });
