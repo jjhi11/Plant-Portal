@@ -355,8 +355,7 @@ require([
 
         // query graphics from the csv layer view. Geometry set for the query
         // can be polygon for point features and only intersecting geometries are returned
-        plantLayerView
-            .queryFeatures(query)
+        plantLayerView.queryFeatures(query)
             .then(function(results) {
                 gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
                 console.log(results);
@@ -908,7 +907,7 @@ console.log(downloadArray);
     //get elements from the dom      
     var waterShedSelect = document.getElementById("waterShed");
     //var hgmSelect = document.getElementById("hgmClass");
-    var typeSelect = document.getElementById("wetlandtype");
+    var typeSelect = document.getElementById("wetlandType");
     var conditionSelect = document.getElementById("wetlandCondition");
     var speciesSelect = document.getElementById("speciesText");
 
@@ -1025,7 +1024,7 @@ console.log(downloadArray);
     query(".calcite-panels .panel .panel-collapse").on("show.bs.collapse", function() {
         console.log("Query Panel Open");
 
-        var querySpecies = new QueryTask({
+        var queryEco = new QueryTask({
             url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
         });
 
@@ -1052,7 +1051,7 @@ console.log(downloadArray);
         ecoQuery.outFields = ["ecoregionalgroup"];
         ecoQuery.returnDistinctValues = true;
 
-        querySpecies.execute(ecoQuery).then(function(ecoRslts) {
+        queryEco.execute(ecoQuery).then(function(ecoRslts) {
             console.log(ecoRslts);
             addToEcoLevel(ecoRslts);
         })
@@ -1075,7 +1074,7 @@ console.log(downloadArray);
 
     // Add the unique values to the wetlandtype select element.
     function addToSelect(values) {
-        console.log("add to select 1");
+        console.log("add to wetlandtype dropdown");
         console.log(values);
         //var selectedType = typeSelect.options.selectedIndex;
 
@@ -1109,7 +1108,7 @@ console.log(downloadArray);
 
     // Add the unique values to the watershed select element.
     function addToSelect2(values) {
-        console.log("add to select 2");
+        console.log("add to watershed dropdown");
         console.log(values);
         var i;
         for (i = waterShedSelect.options.length - 1; i >= 0; i--) {
@@ -1130,7 +1129,7 @@ console.log(downloadArray);
 
     //Add the unique values to the ecoregionalgroup select element.
     function addToEcoLevel(values) {
-        console.log("add to select eco region");
+        console.log("add to eco region dropdown");
         console.log(values);
         sitesCount = 0;
 
@@ -1153,7 +1152,7 @@ console.log(downloadArray);
 
     // Add the unique values to the vegetationcondition select element.
     function addToSelect4(values) {
-        console.log("add to select 4");
+        console.log("add to vegetationcondition dropdown");
         console.log(values);
         var i;
         for (i = conditionSelect.options.length - 1; i >= 0; i--) {
@@ -2033,8 +2032,8 @@ console.log(downloadArray);
     on(typeSelect, "change", function(evt) {
         //defQuery();
         type1 = evt.target.value;
-        console.log(type1);
-       // var valueOne = waterShedSelect.options[waterShedSelect.selectedIndex].value;
+        console.log("wetland type '" + type1 + "'");
+        //var valueOne = waterShedSelect.options[waterShedSelect.selectedIndex].value;
 
     })
 
