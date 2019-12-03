@@ -337,6 +337,20 @@ require([
       });
 
 
+      plantSites
+        .when(function() {
+
+            mapView.whenLayerView(plantSites).then(function(layerView) {
+              plantLayerView = layerView;
+            });
+          })
+          .catch(errorCallback);
+
+      console.log(plantLayerView);
+
+
+
+
     /****************************************************
      * Selects features from the csv layer that intersect
      * a polygon that user drew using sketch view model
@@ -358,6 +372,57 @@ require([
         plantLayerView.queryFeatures(query)
             .then(function(results) {
                 gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+                theGridFields = [
+                    {
+                        alias: 'objectid',
+                        name: 'objectid'
+                    }, 
+                    {
+                        alias: 'Project',
+                        name: 'project'
+                    },
+                    {
+                        alias: 'Watershed',
+                        name: 'watershed'
+                    },
+                    {
+                        alias: 'Site Code',
+                        name: 'sitecode'
+                    },
+                    {
+                        alias: 'Ecoregional Group',
+                        name: 'ecoregionalgroup'
+                    },
+                    {
+                        alias: 'Survey Date',
+                        name: 'surveydate'
+                    },
+                    {
+                        alias: 'Project Wetland Class',
+                        name: 'projectwetlandclass'
+                    },
+                    {
+                        alias: 'Wetland Type',
+                        name: 'wetlandtype'
+                    },
+                    {
+                        alias: 'Vegetation Condition',
+                        name: 'vegetationcondition'
+                    },
+                    {
+                        alias: 'Privacy Status',
+                        name: 'privacystatus'
+                    },
+                    {
+                        alias: 'Mean C',
+                        name: 'meanc'
+                    },
+                    {
+                        alias: 'Relative Native Cover',
+                        name: 'relativenativecover'
+                    },
+                ];
+                results.fields = theGridFields;
                 console.log(results);
                 resultsArray = results.features;
                 var graphics = results.features;
@@ -2160,7 +2225,9 @@ console.log(downloadArray);
         }
     });
 
-
+    function errorCallback(error) {
+        console.log("error:", error);
+      }
 
 
 });
