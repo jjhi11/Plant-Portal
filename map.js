@@ -100,7 +100,12 @@ require([
         className: "esri-icon-table"
     };
 
-
+    // Defines an action to open projects related to the selected feature
+    var projectAction = {
+        title: "Related Projects",
+        id: "related-projects",
+        className: "esri-icon-table"
+    };
 
 
 
@@ -172,7 +177,7 @@ require([
         //outFields: ["watershed", "wetlandtype"],
         popupTemplate: {
             title: "Plant Sites",
-            actions: [speciesAction],
+            actions: [speciesAction, projectAction],
             content: [
             //     {
             //         type: "fields",
@@ -2050,6 +2055,84 @@ console.log(downloadArray);
 
     } //end doSpeciesSummary function
 
+    function doQueryProjects() {
+
+        mapView.graphics.removeAll()
+        //mapView.popup.close();
+        console.log("doQuerySpecies");
+        //doClear();
+        gridFields = ["projectcode", "organization", "projectgoal", "methodname", "assessmentareadescription",
+            "vegetationmethod", "vegetationcalculation", "reportlink"
+        ];
+
+        var queryProjects = new QueryTask({
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
+        });
+
+        relationQueryProjects = new RelationshipQuery({
+            objectIds: [objectid],
+            outFields: ["objectid", "projectcode", "organization", "projectgoal", "methodname", "assessmentareadescription",
+            "vegetationmethod", "vegetationcalculation", "reportlink"],
+            relationshipId: 1
+        });
+
+        queryProjects.executeRelationshipQuery(relationQueryProjects).then(function(rslts) {
+            //console.log(rslts);
+
+            var poop = rslts[objectid];
+
+            var gridFieldArray = [
+                //{alias: 'objectid', name: 'objectid'}, 
+                {
+                    alias: 'Project Code',
+                    name: 'projectcode'
+                },
+                {
+                    alias: 'Organization',
+                    name: 'organization'
+                },
+                {
+                    alias: 'Project Goal',
+                    name: 'projectgoal'
+                },
+                {
+                    alias: 'Method Name',
+                    name: 'methodname'
+                },
+                {
+                    alias: 'Assessment Area Description',
+                    name: 'assessmentareadescription'
+                },
+                {
+                    alias: 'Vegetation Method',
+                    name: 'vegetationmethod'
+                },
+                {
+                    alias: 'Vegetation Calculation',
+                    name: 'vegetationcalculation'
+                },
+                {
+                    alias: 'Report Link',
+                    name: 'reportlink'
+                },
+            ];
+
+            poop.fields = gridFieldArray;
+
+            // poop.fields.forEach(function(fields, i) {
+            //     fields.name = gridFields[i]
+            //     fields.alias = gridFieldArray[i]
+            // });
+
+            console.log(poop);
+            getResults(rslts[objectid]);
+
+        });
+
+       
+
+    }
+
 
 
     function doQuerySpecies() {
@@ -2075,14 +2158,50 @@ console.log(downloadArray);
         querySpecies.executeRelationshipQuery(relationQuerySpecies).then(function(rslts) {
             //console.log(rslts);
 
+            var gridfieldArray = [
+                //{alias: 'objectid', name: 'objectid'}, 
+                {
+                    alias: 'Scientific Name',
+                    name: 'scientificname'
+                },
+                {
+                    alias: 'Common Name',
+                    name: 'commonname'
+                },
+                {
+                    alias: 'Nativity',
+                    name: 'nativity'
+                },
+                {
+                    alias: 'Noxious',
+                    name: 'noxious'
+                },
+                {
+                    alias: 'Growth Form',
+                    name: 'growthform'
+                },
+                {
+                    alias: 'Wetland Indicator',
+                    name: 'wetlandindicator'
+                },
+                {
+                    alias: 'Family',
+                    name: 'family'
+                },
+                {
+                    alias: 'C-Value',
+                    name: 'cvalue'
+                },
+            ];
+
             var poop = rslts[objectid];
 
-            poop.fields = gridFields;
+            poop.fields = gridfieldArray;
 
-            poop.fields.forEach(function(fields, i) {
-                fields.name = gridFields[i]
-                fields.alias = gridFields[i]
-            });
+            // poop.fields.forEach(function(fields, i) {
+            //     fields.name = gridFields[i]
+            //     fields.alias = gridFields[i]
+            // });
 
             console.log(poop);
             getResults(rslts[objectid]);
@@ -2196,6 +2315,16 @@ console.log(downloadArray);
             console.log(event.target.features[0].attributes.objectid);
             singleSiteSpeciesID = event.target.features[0].attributes.objectid;
             doQuerySpecies();
+        }
+    });
+
+    mapView.popup.on("trigger-action", function(event) { // Execute the relatedProjects() function if the project action is clicked
+        if (event.action.id === "related-projects") {
+            console.log("project action clicked");
+            singleSiteSpeciesID = "";
+            console.log(event.target.features[0].attributes.objectid);
+            singleSiteSpeciesID = event.target.features[0].attributes.objectid;
+            doQueryProjects();
         }
     });
 
