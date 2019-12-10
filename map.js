@@ -8,11 +8,13 @@ require([
     "esri/Graphic",
     //Layers
     "esri/layers/FeatureLayer",
+    "esri/layers/MapImageLayer",
     //Tasks  
     "esri/tasks/support/Query",
     "esri/tasks/QueryTask",
     // Widgets
     "esri/widgets/Home",
+    "esri/widgets/ScaleBar",
     "esri/widgets/Zoom",
     "esri/widgets/Compass",
     "esri/widgets/Search",
@@ -53,7 +55,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, Query, QueryTask, Home, Zoom, Compass, Search, Legend, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     /******************************************************************
      *
@@ -169,10 +171,95 @@ require([
 
     let plantLayerView;
 
+    var basinRangeSymbol = {
+        type: "simple-fill",
+        color: [ 255, 170, 0, 0.4 ],
+        style: "solid",
+        outline: { width: 1, color: [0, 0, 0, 1] }
+      };
+
+      var mountainSymbol = {
+        type: "simple-fill",
+        color: [ 85, 255, 0, 0.4 ],
+        style: "solid",
+        outline: { width: 1, color: [0, 0, 0, 1] }
+      };
+
+      var coloradoPlateauSymbol = {
+        type: "simple-fill",
+        color: [ 255, 0, 0, 0.4 ],
+        style: "solid",
+        outline: { width: 1, color: [0, 0, 0, 1] }
+      };
+
+      var renderEco = {
+        type: "unique-value", // autocasts as new UniqueValueRenderer()
+        legendOptions: {
+          title: "Ecoregional Group"
+        },
+        defaultSymbol: { type: "simple-fill" },
+        field: "ecoregionalgroup",
+        uniqueValueInfos: [
+          {
+            value: "Basin and Range", 
+            symbol: basinRangeSymbol,
+            label: "Basin and Range"
+          },
+          {
+            value: "Mountains", 
+            symbol: mountainSymbol,
+            label: "Mountains"
+          },
+          {
+            value: "Colorado Plateau", 
+            symbol: coloradoPlateauSymbol,
+            label: "Colorado Plateau"
+          }
+        ]
+    };
+
+    let ecoRegions = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV5_View/FeatureServer/2",
+        title: "EcoRegoinal Groups",
+        visible: false,
+        outFields: ["*"],
+        renderer: renderEco,
+        popupTemplate: {
+            title: "Ecoregional Groups",
+            content: [
+                {
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "ecoregionalgroup",
+                        visible: true,
+                        label: "Ecoregional Group"
+                    },
+                    {
+                        fieldName: "na_l1name",
+                        visible: true,
+                        label: "Level I Ecoregion"
+                    },
+                    {
+                        fieldName: "na_l2name",
+                        visible: true,
+                        label: "Level II Ecoregion"
+                    },
+                    {
+                        fieldName: "na_l3name",
+                        visible: true,
+                        label: "Level III Ecoregion"
+                    },
+                    ]
+                }
+            ]
+        }
+
+    });
+
     var plantSites = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0",
         title: "Plant Sites",
-        visibile: true,
+        visible: true,
         outFields: ["*"],
         //outFields: ["watershed", "wetlandtype"],
         popupTemplate: {
@@ -244,12 +331,29 @@ require([
         renderer: renderSite
     });
 
+    var ownershipLayer = new MapImageLayer({
+        url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
+        visible: false,
+        title: "Land Ownership",
+        popupTemplate: {
+                    title: "Land Ownership",
+                    content: "{STAE_LGD:contentOwnership}"
+                },
+    });
+
+    var counties = new FeatureLayer({
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/Core_Locations_Supporting_Data/FeatureServer/1",
+        title: "Counties",
+        visible: true,
+        labelsVisible: true,
+        legendEnabled: true
+    });
+
 
     var sitesSpeciesJoin = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/sitesSpeciesJoinV5/FeatureServer",
         //url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/siteSpeciesJoin/FeatureServer",
         // title: "Plant Sites",
-        // visibile: true,
         outFields: ["*"],
         // outFields: ["watershed", "wetlandtype"],
         // popupTemplate: {
@@ -267,7 +371,7 @@ require([
     // Map
     var map = new Map({
         basemap: "hybrid",
-        layers: [plantSites],
+        //layers: [plantSites, ecoRegions],
         //ground: "world-elevation",
     });
 
@@ -319,6 +423,16 @@ require([
         view: mapView,
         secondBasemap: "satellite"
     });
+
+    var scaleBar = new ScaleBar({
+        view: mapView,
+        unit: "dual" // The scale bar displays both metric and non-metric units.
+      });
+
+      // Add the widget to the bottom left corner of the view
+      mapView.ui.add(scaleBar, {
+        position: "bottom-left"
+      });  
 
     // Panel widgets - add legend
     // var legendWidget = new Legend({
@@ -574,7 +688,7 @@ require([
                 console.info("hover");
                 evt.target.title = "Scientific Name from USDA Plants";
             });
-            grid.on("th.field-speciescount:mouseover", function(evt) {
+            grid.on("th.field-sitecount:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Number of selected sites where species found (including both public and confidential sites)";
             });
@@ -790,7 +904,7 @@ require([
     var hucLayer = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/1",
         title: "HUCs",
-        visibile: true,
+        visible: true,
         popupTemplate: {
             title: "<b>Watersheds</b>",
             content: [{
@@ -815,8 +929,11 @@ require([
         renderer: renderHuc
     });
 
-
+    mapView.map.add(counties);
+    mapView.map.add(ownershipLayer);
     mapView.map.add(hucLayer);
+    mapView.map.add(ecoRegions);
+    mapView.map.add(plantSites);
 
     mapView.popup.dockOptions = {
         // Disable the dock button so users cannot undock the popup
@@ -826,7 +943,7 @@ require([
 
 
     function getResults(response) {
-        doSpeciesClear();
+        //doSpeciesClear();
         
 
         console.log("getResults");
@@ -841,9 +958,9 @@ require([
         domClass.add("mapViewDiv");
             if (sitesCount > 0) {
                 console.log("We have" + sitesCount + "sites");
-                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " features at " + sitesCount + " sites</b>"
+                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species at " + sitesCount + " sites</b>"
             } else {
-                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " features</b>"
+                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " sites</b>"
             }
             document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
             document.getElementById("removeX").setAttribute("style", "float: right;");
@@ -1361,6 +1478,7 @@ console.log(downloadArray);
         domClass.remove("mapViewDiv", 'withGrid');
         //plantSites.definitionExpression = "";
         document.getElementById("speciesText").value = "";
+        plantSites.definitionExpression = "";
 
     }
 
@@ -1372,7 +1490,7 @@ console.log(downloadArray);
         console.log(speciescommonname);
 
         var speciesQueryTask = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/4",
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/3",
         });
 
         //Query the related table for names that match commonname field with the user selected option in the DOM
@@ -1776,7 +1894,7 @@ console.log(downloadArray);
         console.log("doSpeciesSummary");
         doSpeciesSummaryClear();
 
-        gridFields = ["family", "scientificname", "commonname", "speciescount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+        gridFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
         var queryParams = "";
 
@@ -1936,7 +2054,7 @@ console.log(downloadArray);
                     //console.log(count + specie);
                     //console.log(summaryArray[i].species);
                     if (specie == summaryArray[i].scientificname) {
-                        summaryArray[i].speciescount = count;
+                        summaryArray[i].sitecount = count;
                     }
 
                 }
@@ -1948,7 +2066,7 @@ console.log(downloadArray);
             //add the mean cover to the summaryArray
             for (var i = 0; i < summaryArray.length; i++) {
                 const entries = Object.entries(totals)
-                const totCount = summaryArray[i].speciescount;
+                const totCount = summaryArray[i].sitecount;
                 for (const [specie, count] of entries) {
                     //console.log(count + specie);
                     //console.log(summaryArray[i].species);
@@ -1998,7 +2116,7 @@ console.log(downloadArray);
                 },
                 {
                     alias: 'Site Count',
-                    name: 'speciescount'
+                    name: 'sitecount'
                 },
                 {
                     alias: 'Mean Cover',

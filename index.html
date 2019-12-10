@@ -33,9 +33,27 @@
       overflow: hidden;
     }
 
-    .calcite-panels .panel-body {
-    overflow-x: auto;
+/* unvisited link */
+a:link {
+  color: blue;
 }
+
+/* visited link */
+a:visited {
+  color: orange;
+}
+
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+
 
     .esri-feature__content-element {
         padding: 0 0 0 0;
@@ -68,7 +86,7 @@
   }
 
   .calcite-panels .panel-body {
-      overflow-x: visible;
+      overflow-x: auto;
   }
 
   #mapViewDiv.withGrid {
@@ -224,7 +242,7 @@
       <div id="collapseInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfo">
         <div class="panel-body">
           <p style="text-align: justify;"><span style="font-weight: 400;">The Wetland Plant Application is a tool that allows users to query, view, and download plant community composition data from Utah&rsquo;s wetlands. Some potential uses of the data include evaluating threats posed by noxious weed species, developing watershed-based species lists to ensure that regionally appropriate species are used in restoration activities, and identifying reference sites to use when setting mitigation standards. Data can also be used to support research on Utah&rsquo;s wetlands to better understand these systems.</span></p>
-<p style="text-align: justify;"><span style="font-weight: 400;">Each site is linked to a list of plant species observed at the site with associated percent cover, using scientific and common names from </span><a href="https://plants.sc.egov.usda.gov" target="_blank">USDA Plants</a><span style="font-weight: 400;">. Plant data were collected by multiple organizations using a variety of methods. Wetlands for the sake of this application include any system considered to be wetland by the contributing organizations and include features such as aquatic beds and unvegetated mudflats and playas that would not meet the U.S. Army Corps of Engineers definition of wetland. Some privately owned sites are only discoverable through queries. These sites are not visible on the map, but do show up in query results. If you click on one of these sites in the table, you will be taken to a random location within the vicinity of the actual site. While only data from reputable sources was included in this application, we make no guarantees about the accuracy of plant identification.</span></p>
+<p style="text-align: justify;">Each site is linked to a list of plant species observed at the site with associated percent cover, using scientific and common names from <a href="https://plants.sc.egov.usda.gov" target="_blank">USDA Plants</a>. Plant data were collected by multiple organizations using a variety of methods. Wetlands for the sake of this application include any system considered to be wetland by the contributing organizations and include features such as aquatic beds and unvegetated mudflats and playas that would not meet the U.S. Army Corps of Engineers definition of wetland. Some privately owned sites are only discoverable through queries. These sites are not visible on the map, but do show up in query results. If you click on one of these sites in the table, you will be taken to a random location within the vicinity of the actual site. While only data from reputable sources was included in this application, we make no guarantees about the accuracy of plant identification.</p>
 <p style="text-align: justify;"><span style="font-weight: 400;">There are three main ways to query data in the application. First, you can click on individual sites to see site attributes and associated plant species. Second, you can query by species to see a list of sites where a particular species was found. Last, you can query by site attributes to either obtain a list of sites with those attributes or a summary list of all species found at sites with those attributes. Data can be queried by major ecoregion, </span><a href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit?ts=5dc5eaea#heading=h.m83qorel3w3l"><span style="font-weight: 400;">wetland class</span></a><span style="font-weight: 400;">, watershed, and </span><a href="https://docs.google.com/document/d/1M1BZ4K61fVmA9pe_NB7IEg-J8TWVSC86x0PnlNFYAic/edit?ts=5dc5eaea#heading=h.1vtndqsngase"><span style="font-weight: 400;">condition class</span></a><span style="font-weight: 400;">. For example, you could obtain a list of all playa wetlands in the Jordan watershed that were considered reference condition or you could obtain a list of all species known from wet meadows in montane valleys.</span></p>
 <p style="text-align: justify;"><span style="font-weight: 400;">Please contact </span><a href="mailto:dmenuz@utah.gov"><span style="font-weight: 400;">Diane Menuz</span></a><span style="font-weight: 400;"> (801.538.7436) with questions or if you are interested in contributing data.</span></p>
         </div>
@@ -271,11 +289,11 @@
           <div id="collapseQuery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingQuery">
             <div class="panel-body">
               <!-- <div class="dds"> -->
-                Select Eco Region
+                Select Ecoregional Group
                 <br><select id="ecoLevel"></select>
                 <br>Select Wetland Type
                 <br><select id="wetlandType"><option selected>All</option></select>
-                <br>Select Watershed
+                <br>Select Watershed (HUC8)
                 <br><select id="waterShed"><option selected>All</option></select>
                 <!-- <br>Select HGM Class
                 <br><select id="hgmClass"><option selected>All</option></select> -->
@@ -309,7 +327,7 @@
               <!-- <br><select id="speciesName"></select> -->
               <br>Species Scientific Name: <input class="awesomplete" type="text" id="speciesText">
               <br>
-              <br><button class="button2" id="querySpeciesFunction">Do Query</button>
+              <br><button class="button2" id="querySpeciesFunction">Show Sites</button>
               <button class="button2" id="clrSpeciesButton">Clear</button>
               <br>
 
