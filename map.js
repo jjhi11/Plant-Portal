@@ -675,16 +675,16 @@ require([
         // add a row-click listener on the grid. This will be used
         // to highlight the corresponding feature on the view
         grid.on("dgrid-select", selectFeatureFromGrid);
-        //console.log(grid.columns[0].field);
+        console.log(grid.columns[0].field);
         //add tooltips to summary of species table
-        if (grid.columns[0].field == "species") {
+        if (grid.columns[0].field == "scientificname") {
 
             console.info("SummarySpecies");
             grid.on("th.field-commonname:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Common Name from USDA Plants";
             });
-            grid.on("th.field-species:mouseover", function(evt) {
+            grid.on("th.field-scientificname:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Scientific Name from USDA Plants";
             });
@@ -708,19 +708,22 @@ require([
                 console.info("hover");
                 evt.target.title = "Growth form";
             });
-            grid.on("th.field-indicator:mouseover", function(evt) {
+            grid.on("th.field-wetlandindicator:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Wetland indicator rating for Arid West or Western Mountains, Valleys, or Coasts (depending on site locations)";
             });
-            grid.on("th.field-finalIndicator:mouseover", function(evt) {
+            grid.on("th.field-cvalue:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Wetland indicator rating for Arid West or Western Mountains, Valleys, or Coasts (depending on site locations)";
             });
-            grid.on("th.field-cover:mouseover", function(evt) {
+            grid.on("th.field-sitecount:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Percent cover at site";
+                evt.target.title = "Number of selected sites where species found (including both confidential and public sites)";
             });
-
+            grid.on("th.field-family:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Plant family from USDA Plants)";
+            });
         }
 
         //add tooltips to sites table
@@ -729,39 +732,47 @@ require([
             console.info("Sites");
             grid.on("th.field-project:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Project Name";
+                evt.target.title = "Project that collected site data";
             });
             grid.on("th.field-watershed:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Watershed";
+                evt.target.title = "Hydrologic unit defined at the HUC8 level";
             });
             grid.on("th.field-sitecode:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Site Code";
+                evt.target.title = "Unique site identifier";
             });
-            grid.on("th.field-ecoSystem:mouseover", function(evt) {
+            grid.on("th.field-ecoregionalgroup:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "NatureServe's Ecological System";
+                evt.target.title = "Modified level III ecoregional group";
             });
             grid.on("th.field-surveydate:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Survey Date";
+                evt.target.title = "Date site was visited";
             });
-            grid.on("th.field-hgmClass:mouseover", function(evt) {
+            grid.on("th.field-projectwetlandclass:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "HGM Class";
+                evt.target.title = "Wetland type assigned by project using project-specific conventions";
             });
             grid.on("th.field-wetlandtype:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Wetland Type";
+                evt.target.title = "Wetland type as assigned by UGS";
             });
-            grid.on("th.field-coverMethod:mouseover", function(evt) {
+            grid.on("th.field-vegetationcondition:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Cover Method";
+                evt.target.title = "Vegetation condition, as “reference”, “not reference”, or “not enough data.”";
             });
-            grid.on("th.field-wetlandCondition:mouseover", function(evt) {
+            grid.on("th.field-privacystatus:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Wetland Condition";
+                evt.target.title = "Privacy status, as “confidential” or “public.”";
+            });
+            grid.on("th.field-meanc:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Average C value of all species at site";
+            });
+            grid.on("th.field-relativenativecover:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Percent of total cover composed of native species";
             });
 
         }
@@ -1485,6 +1496,7 @@ console.log(downloadArray);
 
     function doSpeciesQuery() {
         console.log("Species Querying");
+        doSpeciesClear;
         plantSites.definitionExpression = "";
         var speciescommonname = speciesSelect.value;
         console.log(speciescommonname);
@@ -1542,10 +1554,14 @@ console.log(downloadArray);
 
                 plantSites.definitionExpression = defExp;
 
+
+
                 var query = plantSites.createQuery();
-                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+                gridFields = ["project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+                //gridFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
                 query.where = defExp;
                 query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+                //query.outFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
                 plantSites.queryFeatures(query).then(function(e) {
                     console.log(e);
@@ -1563,8 +1579,58 @@ console.log(downloadArray);
 
                         srch.items.push(att);
                     });
+                    
+                    // testing
+                    var fieldArray = [
+                        //{alias: 'objectid', name: 'objectid'}, 
+                        {
+                            alias: 'Watershed',
+                            name: 'watershed'
+                        },
+                        {
+                            alias: 'Site Code',
+                            name: 'sitecode'
+                        },
+                        {
+                            alias: 'Ecoregional Group',
+                            name: 'ecoregionalgroup'
+                        },
+                        {
+                            alias: 'Survey Date',
+                            name: 'surveydate'
+                        },
+                        {
+                            alias: 'Project Wetland Class',
+                            name: 'projectwetlandclass'
+                        },
+                        {
+                            alias: 'Wetland Type',
+                            name: 'wetlandtype'
+                        },
+                        {
+                            alias: 'Vegetation Condition',
+                            name: 'vegetationcondition'
+                        },
+                        {
+                            alias: 'Privacy Status',
+                            name: 'privacystatus'
+                        },
+                        {
+                            alias: 'Mean C',
+                            name: 'meanc'
+                        },
+                        {
+                            alias: 'Relative Native Cover',
+                            name: 'relativenativecover'
+                        },
+                    ];
+        
+                    e.fields = fieldArray;
+                    //testing
+
                     console.log(e);
                     getResults(e);
+
                 });
 
 
