@@ -104,7 +104,7 @@ require([
 
     // Defines an action to open projects related to the selected feature
     var projectAction = {
-        title: "Related Projects",
+        title: "Project Information",
         id: "related-projects",
         className: "esri-icon-table"
     };
@@ -266,55 +266,7 @@ require([
             title: "Plant Sites",
             actions: [speciesAction, projectAction],
             content: [
-            //     {
-            //         type: "fields",
-            //         fieldInfos: [{
-            //             fieldName: "sitecode",
-            //                  visible: false,
-            //                  label: "Site Code" 
-            //         },
-            //         {
-            //             fieldName: "surveydate",
-            //                  visible: false,
-            //                  label: "Survey Date" 
-            //         },
-            //         {
-            //             fieldName: "coverMethod",
-            //                  visible: false,
-            //                  label: "Cover Method" 
-            //         },
-            //         {
-            //             fieldName: "Organization",
-            //                  visible: false,
-            //                  label: "Organization" 
-            //         },
-            //         {
-            //             fieldName: "ecoSystem",
-            //                  visible: false,
-            //                  label: "Ecological System" 
-            //         },
-            //         {
-            //             fieldName: "hgmClass",
-            //                  visible: false,
-            //                  label: "HGM Class" 
-            //         },
-            //         {
-            //             fieldName: "wetlandtype",
-            //                  visible: false,
-            //                  label: "Wetland Type" 
-            //         },
-            //         {
-            //             fieldName: "vegetationcondition",
-            //                  visible: false,
-            //                  label: "Wetland Condition" 
-            //         },
-            //         {
-            //             fieldName: "conditionMethod",
-            //                  visible: false,
-            //                  label: "Condition Method" 
-            //         }
-            //         ]
-            // },
+
                     {
                     type: "text",
                     text: "<b>Project: </b>{project}<br><b>Site Code: </b>{sitecode}<br><b>Survey Date: </b>{surveydate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalgroup}<br><b>Wetland Type: </b>{wetlandtype}<br><b>Project Wetland Class: </b>{projectwetlandclass}<br><b>Vegetation Condition: </b>{vegetationcondition}<br><b>Privacy Status: </b>{privacystatus}<br><b>Mean C: </b>{meanc}<br><b>Relative Native Cover: </b>{relativenativecover}<br>"
@@ -940,7 +892,7 @@ require([
         renderer: renderHuc
     });
 
-    mapView.map.add(counties);
+    //mapView.map.add(counties);
     mapView.map.add(ownershipLayer);
     mapView.map.add(hucLayer);
     mapView.map.add(ecoRegions);
@@ -1496,7 +1448,7 @@ console.log(downloadArray);
 
     function doSpeciesQuery() {
         console.log("Species Querying");
-        doSpeciesClear;
+        doGridClear();
         plantSites.definitionExpression = "";
         var speciescommonname = speciesSelect.value;
         console.log(speciescommonname);
@@ -1955,6 +1907,7 @@ console.log(downloadArray);
 
 
     function doSpeciesSummary() {
+        doGridClear();
         mapView.graphics.removeAll()
         mapView.popup.close();
         console.log("doSpeciesSummary");
@@ -2241,6 +2194,7 @@ console.log(downloadArray);
 
     function doQueryProjects() {
 
+        doGridClear();
         mapView.graphics.removeAll()
         //mapView.popup.close();
         console.log("doQuerySpecies");
@@ -2320,7 +2274,7 @@ console.log(downloadArray);
 
 
     function doQuerySpecies() {
-
+        doGridClear();
         mapView.graphics.removeAll()
         //mapView.popup.close();
         console.log("doQuerySpecies");
