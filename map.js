@@ -220,7 +220,7 @@ require([
 
     let ecoRegions = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV5_View/FeatureServer/2",
-        title: "EcoRegoinal Groups",
+        title: "EcoRegional Groups",
         visible: false,
         outFields: ["*"],
         renderer: renderEco,
@@ -850,7 +850,7 @@ require([
         color: [242, 196, 238, 0],
         style: "solid",
         outline: { // autocasts as new SimpleLineSymbol()
-            color: [243, 124, 124, 0.69],
+            color: [0, 128, 255, 0.69],
             width: 1.3
         }
     };
