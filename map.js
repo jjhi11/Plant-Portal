@@ -154,7 +154,7 @@ require([
         return content;
     }
 
-    var pointSymbol = {
+    var publicSymbol = {
         type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
         color: "yellow",
         size: "8px",
@@ -164,9 +164,35 @@ require([
         }
     };
 
+    var confidentialSymbol = {
+        type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+        color: "red",
+        size: "8px",
+        outline: { // autocasts as new SimpleLineSymbol()
+            color: "black",
+            width: 0.3
+        }
+    };
+
     var renderSite = {
-        type: "simple", // autocasts as new SimpleRenderer()
-        symbol: pointSymbol,
+        type: "unique-value", 
+        // legendOptions: {
+        //     title: "Wetland Survey Sites"
+        //   },
+        //defaultSymbol: publicSymbol, 
+        field: "privacystatus",
+        uniqueValueInfos: [
+          {
+            value: "public", 
+            symbol: publicSymbol,
+            label: "Public"
+          },
+          {
+            value: "confidential", 
+            symbol: confidentialSymbol,
+            label: "Confidential"
+          }
+        ]
     };
 
     let plantLayerView;
@@ -258,7 +284,7 @@ require([
 
     var plantSites = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0",
-        title: "Plant Sites",
+        title: "Wetland Survey Sites",
         visible: true,
         outFields: ["*"],
         //outFields: ["watershed", "wetlandtype"],
@@ -444,10 +470,7 @@ require([
             .then(function(results) {
                 gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
                 theGridFields = [
-                    {
-                        alias: 'objectid',
-                        name: 'objectid'
-                    }, 
+ 
                     {
                         alias: 'Project',
                         name: 'project'
@@ -497,8 +520,7 @@ require([
                 console.log(results);
                 resultsArray = results.features;
                 var graphics = results.features;
-                // if the grid div is displayed while query results does not
-                // return graphics then hide the grid div and show the instructions div
+
                 if (graphics.length > 0) {
                     // zoom to the extent of the polygon with factor 2
                     mapView.goTo(geometry.extent.expand(2));
@@ -662,11 +684,11 @@ require([
             });
             grid.on("th.field-wetlandindicator:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Wetland indicator rating for Arid West or Western Mountains, Valleys, or Coasts (depending on site locations)";
+                evt.target.title = "Wetland indicator value for Arid West or Western Mountains, Valleys, or Coasts (depending on site location)";
             });
             grid.on("th.field-cvalue:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Wetland indicator rating for Arid West or Western Mountains, Valleys, or Coasts (depending on site locations)";
+                evt.target.title = " Degree of disturbance tolerance ranging from 1 (highly tolerant) to 10 (associated with pristine habitat), with 0 indicating non-native species";
             });
             grid.on("th.field-sitecount:mouseover", function(evt) {
                 console.info("hover");
@@ -675,6 +697,10 @@ require([
             grid.on("th.field-family:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Plant family from USDA Plants)";
+            });
+            grid.on("th.field-cover:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Estimated percent cover";
             });
         }
 
@@ -866,7 +892,7 @@ require([
 
     var hucLayer = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/1",
-        title: "HUCs",
+        title: "Watershed (HUC8) Boundaries",
         visible: true,
         popupTemplate: {
             title: "<b>Watersheds</b>",
@@ -963,9 +989,14 @@ console.log("go on and create grid");
 
         //format the surveydate 
         for (var i = 0; i < data.length; i++) {
-            var dateString = moment(data[i].surveydate).format('l');
-            data[i].surveydate = dateString;
-
+            console.log(data);
+            if (data[i].surveydate) {
+                console.log("Found Survey Date");
+                for (var i = 0; i < data.length; i++) {
+                    var dateString = moment(data[i].surveydate).format('l');
+                    data[i].surveydate = dateString;
+                }
+            }
         }
 
         // set the datastore for the grid using the
@@ -1850,11 +1881,10 @@ console.log(downloadArray);
             const query = new Query();
             query.where = defExp + " AND confidential = '0'";
             plantSites.queryFeatureCount(query).then(function(countConf) {
-                //console.log(count); // prints the total number of client-side graphics to the console
-                //   document.getElementById("count").innerHTML=count + " features returned."; 
-                document.getElementById("featureCount2").innerHTML =
-                    "<b>Found " +
-                    count + " sites (" + countConf + " public) </b>"
+        //**************************PRINTS NUMBER OF SITES FOUND
+                // document.getElementById("featureCount2").innerHTML =
+                //     "<b>Found " +
+                //     count + " sites (" + countConf + " public) </b>"
                 document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
                 document.getElementById("removeX").setAttribute("style", "float: right;");
             })
@@ -1887,11 +1917,10 @@ console.log(downloadArray);
             const query = new Query();
             query.where = defExp + " AND privacystatus = 'public'";
             plantSites.queryFeatureCount(query).then(function(countConf) {
-                //console.log(count); // prints the total number of client-side graphics to the console
-                //   document.getElementById("count").innerHTML=count + " features returned."; 
-                document.getElementById("featureCount2").innerHTML =
-                    "<b>Found " +
-                    count + " sites (" + countConf + " public) </b>"
+//**************************PRINTS NUMBER OF SITES FOUND
+                // document.getElementById("featureCount2").innerHTML =
+                //     "<b>Found " +
+                //     count + " sites (" + countConf + " public) </b>"
                 document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
                 document.getElementById("removeX").setAttribute("style", "float: right;");
             })
@@ -2279,7 +2308,7 @@ console.log(downloadArray);
         //mapView.popup.close();
         console.log("doQuerySpecies");
         //doClear();
-        gridFields = ["scientificname", "commonname", "growthform", "nativity", "noxious",
+        gridFields = ["scientificname", "commonname", "growthform", "nativity", "noxious", "cover", 
             "wetlandindicator", "family", "cvalue"
         ];
 
@@ -2289,7 +2318,7 @@ console.log(downloadArray);
 
         relationQuerySpecies = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["objectid", "scientificname", "commonname", "growthform", "nativity", "noxious", "wetlandindicator", "family", "cvalue"],
+            outFields: ["objectid", "scientificname", "commonname", "growthform", "nativity", "noxious", "cover", "wetlandindicator", "family", "cvalue"],
             relationshipId: 0
         });
 
@@ -2299,12 +2328,20 @@ console.log(downloadArray);
             var gridfieldArray = [
                 //{alias: 'objectid', name: 'objectid'}, 
                 {
+                    alias: 'Family',
+                    name: 'family'
+                },
+                {
                     alias: 'Scientific Name',
                     name: 'scientificname'
                 },
                 {
                     alias: 'Common Name',
                     name: 'commonname'
+                },
+                {
+                    alias: 'Cover',
+                    name: 'cover'
                 },
                 {
                     alias: 'Nativity',
@@ -2323,13 +2360,9 @@ console.log(downloadArray);
                     name: 'wetlandindicator'
                 },
                 {
-                    alias: 'Family',
-                    name: 'family'
-                },
-                {
                     alias: 'C-Value',
                     name: 'cvalue'
-                },
+                }
             ];
 
             var poop = rslts[objectid];
