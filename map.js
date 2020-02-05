@@ -1537,6 +1537,10 @@ console.log(downloadArray);
 
                 plantSites.definitionExpression = defExp;
 
+                plantSites.queryExtent().then(function(response) {
+                    console.log(response);
+                    mapView.goTo(response.extent);
+                  });
 
 
                 var query = plantSites.createQuery();
@@ -1714,7 +1718,10 @@ console.log(downloadArray);
 
         console.log(plantSites.definitionExpression);
 
-
+        plantSites.queryExtent().then(function(response) {
+            console.log(response);
+            mapView.goTo(response.extent);
+          });
 
         //add feature count and add x to upper right corner of table to close it
         plantSites.queryFeatureCount().then(function(count) {
@@ -1727,7 +1734,6 @@ console.log(downloadArray);
         });
 
         var query = plantSites.createQuery();
-        //query.where = "STATE_NAME = 'Washington'";
         query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
 
         plantSites.queryFeatures(query).then(function(e) {
@@ -1750,28 +1756,32 @@ console.log(downloadArray);
             var fieldArray = [
                 //{alias: 'objectid', name: 'objectid'}, 
                 {
-                    alias: 'Watershed',
-                    name: 'watershed'
+                    alias: 'Project',
+                    name: 'project'
                 },
                 {
                     alias: 'Site Code',
                     name: 'sitecode'
                 },
                 {
-                    alias: 'Ecoregional Group',
-                    name: 'ecoregionalgroup'
-                },
-                {
                     alias: 'Survey Date',
                     name: 'surveydate'
                 },
                 {
-                    alias: 'Project Wetland Class',
-                    name: 'projectwetlandclass'
+                    alias: 'Watershed',
+                    name: 'watershed'
+                },
+                {
+                    alias: 'Ecoregional Group',
+                    name: 'ecoregionalgroup'
                 },
                 {
                     alias: 'Wetland Type',
                     name: 'wetlandtype'
+                },
+                {
+                    alias: 'Project Wetland Class',
+                    name: 'projectwetlandclass'
                 },
                 {
                     alias: 'Vegetation Condition',
@@ -2036,11 +2046,16 @@ console.log(downloadArray);
         });
         console.log(plantSites.definitionExpression);
 
+        plantSites.queryExtent().then(function(response) {
+            console.log(response);
+            mapView.goTo(response.extent);
+          });
+
 
         var query = sitesSpeciesJoin.createQuery();
         query.where = queryParams;
-        query.outFields = ["*"];
-        //query.outFields = ["scientificname", "commonname", "speciescount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "family", "cvalue"];
+        //query.outFields = ["*"];
+        query.outFields = ["OBJECTID", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "family", "cvalue"];
 
         sitesSpeciesJoin.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -2321,6 +2336,7 @@ console.log(downloadArray);
             outFields: ["objectid", "scientificname", "commonname", "growthform", "nativity", "noxious", "cover", "wetlandindicator", "family", "cvalue"],
             relationshipId: 0
         });
+
 
         querySpecies.executeRelationshipQuery(relationQuerySpecies).then(function(rslts) {
             //console.log(rslts);
