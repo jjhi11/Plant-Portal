@@ -665,7 +665,7 @@ require([
             });
             grid.on("th.field-sitecount:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Number of selected sites where species found (including both public and confidential sites)";
+                evt.target.title = "Number of selected sites where species found";
             });
             grid.on("th.field-meancover:mouseover", function(evt) {
                 console.info("hover");
@@ -1206,27 +1206,12 @@ console.log(downloadArray);
     query(".calcite-panels .panel .panel-collapse").on("show.bs.collapse", function() {
         console.log("Query Panel Open");
 
+        
+
         var queryEco = new QueryTask({
             url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
         });
 
-        // var typeQuery = new Query();
-        // typeQuery.where = "1=1";
-        // typeQuery.outFields = ["wetlandtype"];
-        // typeQuery.returnDistinctValues = true;
-
-        // querySpecies.execute(typeQuery).then(function(typeRslts) {
-        //     addToSelect(typeRslts);
-        // })
-
-        // var shedQuery = new Query();
-        // shedQuery.where = "1=1";
-        // shedQuery.outFields = ["huc8"];
-        // shedQuery.returnDistinctValues = true;
-
-        // querySpecies.execute(shedQuery).then(function(shedRslts) {
-        //     addToSelect2(shedRslts);
-        // })
 
         var ecoQuery = new Query();
         ecoQuery.where = "1=1";
@@ -1238,15 +1223,8 @@ console.log(downloadArray);
             addToEcoLevel(ecoRslts);
         })
 
-        // var conditionQuery = new Query();
-        // conditionQuery.where = "1=1";
-        // conditionQuery.outFields = ["wetlandCondition"];
-        // conditionQuery.returnDistinctValues = true;
 
-        // querySpecies.execute(conditionQuery).then(function(conditionRslts) {
-        //     addToSelect4(conditionRslts);
-        // })
-
+        doClear();
 
 
 
