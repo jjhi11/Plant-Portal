@@ -2241,7 +2241,7 @@ console.log(downloadArray);
         doGridClear();
         mapView.graphics.removeAll()
         //mapView.popup.close();
-        console.log("doQuerySpecies");
+        console.log("doQueryProjects");
         //doClear();
         gridFields = ["projectcode", "organization", "projectgoal", "methodname", "assessmentareadescription",
             "vegetationmethod", "vegetationcalculation", "reportlink"
@@ -2253,7 +2253,8 @@ console.log(downloadArray);
 
         relationQueryProjects = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"],
+            outFields: ["projectcode", "organization", "projectgoal", "methodname", "assessmentareadescription",
+            "vegetationmethod", "vegetationcalculation", "reportlink"],
             relationshipId: 1
         });
 
@@ -2321,7 +2322,7 @@ console.log(downloadArray);
         mapView.graphics.removeAll()
         //mapView.popup.close();
         console.log("doQuerySpecies");
-        gridFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+        gridFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
         var querySpecies = new QueryTask({
             url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
@@ -2329,7 +2330,7 @@ console.log(downloadArray);
 
         relationQuerySpecies = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"],
+            outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"],
             relationshipId: 0
         });
 
@@ -2351,13 +2352,10 @@ console.log(downloadArray);
                     alias: 'Common Name',
                     name: 'commonname'
                 },
+
                 {
-                    alias: 'Site Count',
-                    name: 'sitecount'
-                },
-                {
-                    alias: 'Mean Cover',
-                    name: 'meancover'
+                    alias: 'Cover',
+                    name: 'cover'
                 },
                 {
                     alias: 'Nativity',
