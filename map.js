@@ -697,7 +697,7 @@ require([
             });
             grid.on("th.field-family:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Plant family from USDA Plants)";
+                evt.target.title = "Plant family from USDA Plants";
             });
             grid.on("th.field-cover:mouseover", function(evt) {
                 console.info("hover");
@@ -1016,6 +1016,7 @@ console.log("go on and create grid");
     }
 
     document.getElementById("downloadX").addEventListener("click", function(evt) {
+        console.log(evt);
 
         //download array to csv functions
 
@@ -1571,28 +1572,32 @@ console.log(downloadArray);
                     var fieldArray = [
                         //{alias: 'objectid', name: 'objectid'}, 
                         {
-                            alias: 'Watershed',
-                            name: 'watershed'
+                            alias: 'Project',
+                            name: 'project'
                         },
                         {
                             alias: 'Site Code',
                             name: 'sitecode'
                         },
                         {
-                            alias: 'Ecoregional Group',
-                            name: 'ecoregionalgroup'
-                        },
-                        {
                             alias: 'Survey Date',
                             name: 'surveydate'
                         },
                         {
-                            alias: 'Project Wetland Class',
-                            name: 'projectwetlandclass'
+                            alias: 'Watershed',
+                            name: 'watershed'
+                        },
+                        {
+                            alias: 'Ecoregional Group',
+                            name: 'ecoregionalgroup'
                         },
                         {
                             alias: 'Wetland Type',
                             name: 'wetlandtype'
+                        },
+                        {
+                            alias: 'Project Wetland Class',
+                            name: 'projectwetlandclass'
                         },
                         {
                             alias: 'Vegetation Condition',
@@ -1909,7 +1914,7 @@ console.log(downloadArray);
 
     function ecoQuery() {
         console.log('eco query');
-        //doClear();
+        doGridClear();
 
         var valueThree = ecoLevel.options[ecoLevel.selectedIndex].value;
         console.log(valueThree);
@@ -2167,6 +2172,11 @@ console.log(downloadArray);
 
             var uniqueArray = removeDuplicates(summaryArray, "scientificname");
 
+            var noCoverArray = uniqueArray.map(obj => ({family: obj.family, scientificname: obj.scientificname, commonname: obj.commonname, sitecount: obj.sitecount, meancover: obj.meancover, nativity: obj.nativity, noxious: obj.noxious, growthform: obj.growthform, wetlandindicator: obj.wetlandindicator, cvalue: obj.cvalue}))
+
+             
+            console.log(noCoverArray)
+
             var fieldArray = [
                 //{alias: 'objectid', name: 'objectid'}, 
                 {
@@ -2217,14 +2227,16 @@ console.log(downloadArray);
                 fields: ''
             }
 
-            forObject.features = uniqueArray;
+            forObject.features = noCoverArray;
             forObject.fields = fieldArray;
+
+
 
             console.log(forObject)
 
 
 
-            console.log(uniqueArray)
+            console.log(noCoverArray)
 
             getResults(forObject);
 
