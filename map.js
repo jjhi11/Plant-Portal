@@ -690,11 +690,7 @@ require([
             grid.on("th.field-cvalue:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = " Degree of disturbance tolerance ranging from 1 (highly tolerant) to 10 (associated with pristine habitat), with 0 indicating non-native species";
-            });
-            grid.on("th.field-sitecount:mouseover", function(evt) {
-                console.info("hover");
-                evt.target.title = "Number of selected sites where species found (including both confidential and public sites)";
-            });
+            });;
             grid.on("th.field-family:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Plant family from USDA Plants";
