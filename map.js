@@ -185,12 +185,12 @@ require([
           {
             value: "public", 
             symbol: publicSymbol,
-            label: "Public"
+            label: "Public (Location Exact)"
           },
           {
             value: "confidential", 
             symbol: confidentialSymbol,
-            label: "Confidential"
+            label: "Confidential (Location Approximate)"
           }
         ]
     };
@@ -650,8 +650,9 @@ require([
         // to highlight the corresponding feature on the view
         grid.on("dgrid-select", selectFeatureFromGrid);
         console.log(grid.columns[0].field);
+
         //add tooltips to summary of species table
-        if (grid.columns[0].field == "scientificname") {
+        if (grid.columns[0].field == "family") {
 
             console.info("SummarySpecies");
             grid.on("th.field-commonname:mouseover", function(evt) {
@@ -705,7 +706,7 @@ require([
         }
 
         //add tooltips to sites table
-        if (grid.columns[0].field == "watershed") {
+        if (grid.columns[0].field == "project") {
 
             console.info("Sites");
             grid.on("th.field-project:mouseover", function(evt) {
@@ -989,7 +990,6 @@ console.log("go on and create grid");
 
         //format the surveydate 
         for (var i = 0; i < data.length; i++) {
-            console.log(data);
             if (data[i].surveydate) {
                 console.log("Found Survey Date");
                 for (var i = 0; i < data.length; i++) {
@@ -1478,7 +1478,7 @@ console.log(downloadArray);
 
 
     function doSpeciesQuery() {
-        console.log("Species Querying");
+        console.log("doSpeciesQuery");
         doGridClear();
         plantSites.definitionExpression = "";
         var speciescommonname = speciesSelect.value;
@@ -2055,7 +2055,7 @@ console.log(downloadArray);
         var query = sitesSpeciesJoin.createQuery();
         query.where = queryParams;
         //query.outFields = ["*"];
-        query.outFields = ["OBJECTID", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "family", "cvalue"];
+        query.outFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
         sitesSpeciesJoin.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -2170,6 +2170,10 @@ console.log(downloadArray);
             var fieldArray = [
                 //{alias: 'objectid', name: 'objectid'}, 
                 {
+                    alias: 'Family',
+                    name: 'family'
+                },
+                {
                     alias: 'Scientific Name',
                     name: 'scientificname'
                 },
@@ -2200,10 +2204,6 @@ console.log(downloadArray);
                 {
                     alias: 'Wetland Indicator',
                     name: 'wetlandindicator'
-                },
-                {
-                    alias: 'Family',
-                    name: 'family'
                 },
                 {
                     alias: 'C-Value',
@@ -2253,8 +2253,7 @@ console.log(downloadArray);
 
         relationQueryProjects = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["objectid", "projectcode", "organization", "projectgoal", "methodname", "assessmentareadescription",
-            "vegetationmethod", "vegetationcalculation", "reportlink"],
+            outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"],
             relationshipId: 1
         });
 
@@ -2322,10 +2321,7 @@ console.log(downloadArray);
         mapView.graphics.removeAll()
         //mapView.popup.close();
         console.log("doQuerySpecies");
-        //doClear();
-        gridFields = ["scientificname", "commonname", "growthform", "nativity", "noxious", "cover", 
-            "wetlandindicator", "family", "cvalue"
-        ];
+        gridFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
         var querySpecies = new QueryTask({
             url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
@@ -2333,7 +2329,7 @@ console.log(downloadArray);
 
         relationQuerySpecies = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["objectid", "scientificname", "commonname", "growthform", "nativity", "noxious", "cover", "wetlandindicator", "family", "cvalue"],
+            outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"],
             relationshipId: 0
         });
 
@@ -2356,8 +2352,12 @@ console.log(downloadArray);
                     name: 'commonname'
                 },
                 {
-                    alias: 'Cover',
-                    name: 'cover'
+                    alias: 'Site Count',
+                    name: 'sitecount'
+                },
+                {
+                    alias: 'Mean Cover',
+                    name: 'meancover'
                 },
                 {
                     alias: 'Nativity',
@@ -2378,7 +2378,7 @@ console.log(downloadArray);
                 {
                     alias: 'C-Value',
                     name: 'cvalue'
-                }
+                },
             ];
 
             var poop = rslts[objectid];
@@ -2520,6 +2520,25 @@ console.log(downloadArray);
         mapView.graphics.removeAll();
         console.log("closing popup");
     });
+
+    //open glossary panel when links are clicked from the about panel
+    var aClickedWetLink = document.getElementById("wetlandClassLink");
+
+    aClickedWetLink.onclick = function(){
+
+        document.getElementById("panelGlossary").className = "panel collapse in";
+        document.getElementById("collapseGlossary").className = "panel-collapse collapse in";
+        return false;
+    }
+
+    var aClickedConLink = document.getElementById("conditionClassLink");
+
+    aClickedConLink.onclick = function(){
+
+        document.getElementById("panelGlossary").className = "panel collapse in";
+        document.getElementById("collapseGlossary").className = "panel-collapse collapse in";
+        return false;
+    }
 
     // Basemap events
     query("#selectBasemapPanel").on("change", function(e) {
