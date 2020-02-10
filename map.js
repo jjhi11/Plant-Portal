@@ -2030,9 +2030,11 @@ console.log(downloadArray);
             mapView.goTo(response.extent);
           });
 
+          var newQueryParams = plantSites.definitionExpression;
+
 
         var query = sitesSpeciesJoin.createQuery();
-        query.where = queryParams;
+        query.where = plantSites.definitionExpression;
         //query.outFields = ["*"];
         query.outFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
@@ -2057,29 +2059,54 @@ console.log(downloadArray);
             var summaryArray = [];
 
             srch.items.forEach(function(calc) {
+                //console.log(calc);
                 summaryArray.push(calc);
             });
 
-            //console.log(summaryArray);
+            console.log(summaryArray);
 
-            var counts = [];
+            
 
 
             //count the number of sites each species is present at
-            for (var i = 0; i < summaryArray.length; i++) {
-                //var cover = summaryArray[i].cover;
-                var num = summaryArray[i].scientificname;
-                var coverSum = "";
 
-                if (counts[num] = counts[num]) {
-                    counts[num] = counts[num] + 1;
-                    //counts[coverSum] = counts[coverSum] + cover;
-                } else {
-                    counts[num] = 1;
-                };
 
-            }
-            //console.log(counts);
+
+//------------------------------------
+count = function (ary, classifier) {
+    console.log(ary);
+    console.log(classifier);
+    classifier = classifier || String;
+    console.log(classifier);
+    return ary.reduce(function (counter, item) {
+        var p = classifier(item);
+        counter[p] = counter.hasOwnProperty(p) ? counter[p] + 1 : 1;
+        return counter;
+    }, {})
+};
+
+counts = count(summaryArray, function (item){
+    return item.scientificname
+});
+
+//-------------------------------------
+// var counts = [];
+//             for (var i = 0; i < summaryArray.length; i++) {
+//                 //var cover = summaryArray[i].cover;
+//                 var num = summaryArray[i].scientificname;
+//                 var coverSum = "";
+//                 console.log(num);
+//                 if (counts[num] = counts[num]) {
+//                     counts[num] = counts[num] + 1;
+//                     //counts[coverSum] = counts[coverSum] + cover;
+//                 } else {
+//                     counts[num] = 1;
+//                 } ;
+
+//             }
+
+
+            console.log(counts);
 
             //sum the cover values for each scientificname
             totals = summaryArray.reduce(function(r, o) {
@@ -2087,7 +2114,7 @@ console.log(downloadArray);
                 return r;
             }, []);
 
-            //console.log(totals);
+            console.log(totals);
 
             //add the counts to the summaryArray
             for (var i = 0; i < summaryArray.length; i++) {
@@ -2102,8 +2129,6 @@ console.log(downloadArray);
                 }
 
             }
-
-            //console.log(summaryArray);
 
             //add the mean cover to the summaryArray
             for (var i = 0; i < summaryArray.length; i++) {
@@ -2121,7 +2146,6 @@ console.log(downloadArray);
 
             }
 
-            console.log(summaryArray);
             //convert menaCover from string to integer
             for (var i in summaryArray) {
                 summaryArray[i].meancover = +summaryArray[i].meancover;
